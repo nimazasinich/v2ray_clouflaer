@@ -1,0 +1,33 @@
+{
+  "log": { "loglevel": "warning" },
+  "inbounds": [
+    { "port": 10808, "protocol": "socks", "settings": { "auth": "noauth", "udp": true }, "tag": "socks-in" },
+    { "port": 10809, "protocol": "http", "tag": "http-in" }
+  ],
+  "outbounds": [
+    {
+      "protocol": "vless",
+      "settings": {
+        "vnext": [{
+          "address": "__SERVER_IP__",
+          "port": 2095,
+          "users": [{ "id": "__V2_UUID__", "encryption": "none" }]
+        }]
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "reality",
+        "realitySettings": {
+          "serverName": "__V2_REALITY_SNI__",
+          "fingerprint": "chrome",
+          "publicKey": "__V2_REALITY_PUB_KEY__",
+          "shortId": "__V2_REALITY_SHORT_ID__",
+          "spiderX": ""
+        },
+        "xhttpSettings": { "path": "__V2_REALITY_2095_PATH__" }
+      },
+      "tag": "proxy"
+    },
+    { "protocol": "freedom", "tag": "direct" }
+  ]
+}

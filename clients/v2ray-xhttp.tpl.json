@@ -1,0 +1,29 @@
+{
+  "log": { "loglevel": "warning" },
+  "inbounds": [
+    { "port": 10808, "protocol": "socks", "settings": { "auth": "noauth", "udp": true }, "tag": "socks-in" },
+    { "port": 10809, "protocol": "http", "tag": "http-in" }
+  ],
+  "outbounds": [
+    {
+      "protocol": "vless",
+      "settings": {
+        "vnext": [{
+          "address": "__CDN_SUB__",
+          "port": __V2_XHTTP_PORT__,
+          "users": [{ "id": "__V2_UUID__", "encryption": "none" }]
+        }]
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "none",
+        "xhttpSettings": {
+          "path": "__V2_XHTTP_PATH__",
+          "host": "__CDN_SUB__"
+        }
+      },
+      "tag": "proxy"
+    },
+    { "protocol": "freedom", "tag": "direct" }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "log": { "loglevel": "warning" },
+  "inbounds": [
+    { "port": 10808, "protocol": "socks", "settings": { "auth": "noauth", "udp": true }, "tag": "socks-in" },
+    { "port": 10809, "protocol": "http", "tag": "http-in" }
+  ],
+  "outbounds": [
+    {
+      "protocol": "vless",
+      "settings": {
+        "vnext": [{
+          "address": "__CDN_SUB__",
+          "port": __GRPC_PUBLIC_PORT__,
+          "users": [{ "id": "__UUID__", "encryption": "none" }]
+        }]
+      },
+      "streamSettings": {
+        "network": "grpc",
+        "security": "tls",
+        "tlsSettings": { "serverName": "__CDN_SUB__" },
+        "grpcSettings": {
+          "serviceName": "__GRPC_SERVICE_NAME__",
+          "multiMode": false
+        }
+      },
+      "tag": "proxy"
+    },
+    { "protocol": "freedom", "tag": "direct" }
+  ]
+}
