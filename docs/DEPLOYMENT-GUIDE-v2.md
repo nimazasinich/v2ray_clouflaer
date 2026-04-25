@@ -229,8 +229,22 @@ the source guide; the values pasted into `/etc/sysctl.conf` then `sysctl -p`.)
 
 ### 5.4 Reality bypass
 
-Reality on :443 connects to the IP directly, not through CF. Either keep
-the apex DNS-only or use a `direct.<domain>` record with grey-cloud.
+Reality on :443 **must connect to the origin IP directly**, not through
+Cloudflare. Cloudflare terminates TLS at its edge, which breaks Reality's
+TLS-inside-TLS handshake — clients see a TLS error or generic "connection
+failed".
+
+Two correct topologies:
+
+1. Apex DNS-only (grey cloud) so `dreammaker-groupsoft.ir` resolves to the
+   origin IP for Reality, and use `cdn.dreammaker-groupsoft.ir` (proxied)
+   for everything else.
+2. Or set the Reality client `address` to the literal IP `82.115.26.105`
+   while keeping a separate `cdn.*` for CDN-fronted protocols.
+
+The generated `tmp/clients/reality.json` follows option (2): the client
+points directly at the IP, with SNI `digikala.com`, so it never touches
+Cloudflare. Don't change it to a `cdn.*` host — that would break Reality.
 
 ---
 

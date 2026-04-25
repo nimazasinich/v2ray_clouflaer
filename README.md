@@ -46,12 +46,22 @@ public face on `:2053`.
 │   ├── 40-cloudflare.sh       # STEP 3+4 — CF API READ-ONLY verifier (default)
 │   ├── 41-cloudflare-apply.sh # OPT-IN — apply zone state to CF_EXPECT_*
 │   ├── 42-cloudflare-mint.sh  # OPT-IN — mint scoped child token, apply, revoke
+│   ├── 43-ssl-expand.sh       # expand LE cert SAN to cover apex + cdn.* (fixes HTTP 525)
 │   ├── 50-links.sh            # STEP 5 — generate + APPEND vless:// links
 │   ├── 60-status.sh           # STEP 6 — local health snapshot
-│   └── 61-edge-probe.sh       # external multi-protocol probe (Reality/WS/VMess/Trojan/XHTTP/Outline)
+│   ├── 61-edge-probe.sh       # external multi-protocol probe (Reality/WS/VMess/Trojan/XHTTP/Outline)
+│   └── 70-client-config.sh    # render every clients/*.tpl.json into ready-to-use v2ray JSON
 ├── templates/
 │   ├── xray-wss.conf.tpl
 │   └── xray-grpc.conf.tpl
+├── clients/
+│   ├── v2ray-reality.tpl.json     # client templates (one per protocol)
+│   ├── v2ray-vless-ws-cdn.tpl.json
+│   ├── v2ray-vmess-ws.tpl.json
+│   ├── v2ray-trojan.tpl.json
+│   ├── v2ray-xhttp.tpl.json
+│   ├── v2ray-wss-cdn.tpl.json    # CF-edge-fix WSS via cdn.*:2083
+│   └── v2ray-grpc-cdn.tpl.json   # CF-edge-fix gRPC via cdn.*:2053
 ├── docs/
 │   ├── CLOUDFLARE-MANUAL.md      # manual dashboard checklist (DNS, SSL, WS, cache, etc.)
 │   └── DEPLOYMENT-GUIDE-v2.md    # full v2.0 multi-protocol runbook + live findings
@@ -98,7 +108,37 @@ cp config.env.example config.env
 ./bin/run-remote.sh cf        # read-only Cloudflare verification
 CF_APPLY_CONFIRM=YES ./bin/run-remote.sh cf-apply   # apply to match CF_EXPECT_*
 CF_APPLY_CONFIRM=YES ./bin/run-remote.sh cf-mint    # mint→apply→revoke
+./bin/run-remote.sh ssl-expand                      # expand LE cert SAN
+./bin/run-remote.sh clients                         # render v2ray client configs locally
 ```
+
+### Client configs (rendered on demand)
+
+`scripts/70-client-config.sh` (also runs as part of `bin/run-all.sh`) reads
+the templates in `clients/*.tpl.json` and writes ready-to-run v2ray JSON
+files to `tmp/clients/` with every placeholder replaced from `config.env`:
+
+| File | Inbound (server) | Notes |
+|------|------------------|-------|
+| `reality.json`      | VLESS Reality :443 (direct to IP) | uses `V2_*` identity |
+| `vless-ws-cdn.json` | VLESS WS :80 via CDN              | uses `V2_*` identity |
+| `vmess-ws.json`     | VMess WS :2052                     | uses `V2_*` identity |
+| `trojan.json`       | Trojan TLS :8443                   | uses `V2_TROJAN_PASSWORD` |
+| `xhttp.json`        | VLESS XHTTP :2096 (TLS)            | uses `V2_*` identity |
+| `wss-cdn.json`      | CF-edge-fix WSS via `cdn.*:2083`   | uses primary `UUID` |
+| `grpc-cdn.json`     | CF-edge-fix gRPC via `cdn.*:2053`  | uses primary `UUID` |
+| `links.txt`         | All vless://, vmess://, trojan:// share-links | bundle |
+
+Run a config with:
+
+```bash
+v2ray run -c tmp/clients/reality.json
+curl -x socks5://127.0.0.1:10808 https://ipinfo.io
+```
+
+`tmp/clients/` is gitignored — these files inline identity material and
+must never be committed. Rotate UUID/keys/password if any rendered file
+leaks.
 
 ### Outputs
 
