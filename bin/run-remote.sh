@@ -20,8 +20,8 @@ TARGET="${SSH_USER}@${SERVER_IP}"
 cmd="${1:-all}"
 
 case "$cmd" in
-    all|status|links|cf|wss|grpc|probe) ;;
-    *) die "unknown command: $cmd (expected: all|status|links|cf|wss|grpc|probe)" ;;
+    all|status|links|cf|wss|grpc|probe|cf-apply|cf-mint) ;;
+    *) die "unknown command: $cmd (expected: all|status|links|cf|cf-apply|cf-mint|wss|grpc|probe)" ;;
 esac
 
 require_cmd ssh rsync
@@ -47,4 +47,15 @@ case "$cmd" in
     wss)    ssh "$TARGET" "bash ${REMOTE_DIR}/scripts/10-ssl-cert.sh && bash ${REMOTE_DIR}/scripts/20-nginx-wss.sh" ;;
     grpc)   ssh "$TARGET" "bash ${REMOTE_DIR}/scripts/30-xray-grpc-inbound.sh && bash ${REMOTE_DIR}/scripts/31-nginx-grpc.sh" ;;
     probe)  bash "${HERE}/scripts/61-edge-probe.sh" ;;
+    cf-apply)
+        if [[ "${CF_APPLY_CONFIRM:-}" != "YES" ]]; then
+            die "Refusing: set CF_APPLY_CONFIRM=YES in env or config.env to enable Cloudflare apply."
+        fi
+        # Run on remote so secrets stay on-server-only via SSH.
+        ssh "$TARGET" "CF_APPLY_CONFIRM=YES bash ${REMOTE_DIR}/scripts/41-cloudflare-apply.sh" ;;
+    cf-mint)
+        if [[ "${CF_APPLY_CONFIRM:-}" != "YES" ]]; then
+            die "Refusing: set CF_APPLY_CONFIRM=YES in env or config.env to enable Cloudflare mint→apply→revoke."
+        fi
+        ssh "$TARGET" "CF_APPLY_CONFIRM=YES bash ${REMOTE_DIR}/scripts/42-cloudflare-mint.sh" ;;
 esac

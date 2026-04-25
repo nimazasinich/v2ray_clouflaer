@@ -399,20 +399,26 @@ here because they substantially refine the runbook above.
 
 ### 10.1 Cloudflare zone state vs guide
 
-The verifier read 9 zone settings against the v2.0 expected state. Drift:
+The verifier read 9 zone settings against the v2.0 expected state.
+Original drift was applied automatically via `scripts/41-cloudflare-apply.sh`
+using a token with `Zone Settings:Edit` scope:
 
-| Setting | Guide says | Live | Action |
-|---|---|---|---|
-| WebSockets | on | `on` | ✅ |
-| HTTP/3 (QUIC) | on | `on` | ✅ |
-| 0-RTT | **on** | `off` | Toggle ON in Network → 0-RTT |
-| SSL/TLS mode | Full | `full` | ✅ |
-| Min TLS | **1.2** | `1.0` | Bump to 1.2 in SSL/TLS → Edge Certificates |
-| TLS 1.3 | on | `on` | ✅ |
-| Always Use HTTPS | off | `off` | ✅ |
-| Automatic HTTPS Rewrites | **off** | `on` | Turn off in SSL/TLS → Edge Certificates |
-| `cdn.*` DNS | A → IP, Proxied | A → 82.115.26.105, Proxied | ✅ |
-| Cache Rules | bypass for `cdn.*` | unreadable with this token | Confirm manually |
+| Setting | Guide says | Was | Now | Method |
+|---|---|---|---|---|
+| WebSockets | on | `on` | `on` | already-ok |
+| HTTP/3 (QUIC) | on | `on` | `on` | already-ok |
+| 0-RTT | on | `off` | **`on`** | PATCH |
+| SSL/TLS mode | Full | `full` | `full` | already-ok |
+| Min TLS | 1.2 | `1.0` | **`1.2`** | PATCH |
+| TLS 1.3 | on | `on`/`zrt` | **`zrt`** (= TLS 1.3 + 0-RTT) | PATCH |
+| Always Use HTTPS | off | `off` | `off` | already-ok |
+| Automatic HTTPS Rewrites | off | `on` | **`off`** | PATCH |
+| `cdn.*` DNS | A → IP, Proxied | A → 82.115.26.105, Proxied | unchanged | already-ok |
+| Cache Rules | bypass for `cdn.*` | unreadable | unreadable (token scope) | manual |
+
+`tls_1_3=zrt` is Cloudflare's compound value meaning "TLS 1.3 + 0-RTT
+enabled together". When `CF_EXPECT_TLS_1_3=on` and `CF_EXPECT_0RTT=on`
+the apply script automatically requests `zrt` so both settings end up on.
 
 ### 10.2 Multi-protocol probe (from external host)
 

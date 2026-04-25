@@ -1,9 +1,18 @@
-# Cloudflare — manual dashboard checklist
+# Cloudflare — dashboard checklist (manual or automated)
 
-This app **never modifies** Cloudflare settings. `scripts/40-cloudflare.sh`
-only reads current state (when a token is provided) and prints this
-checklist. Apply every step manually in the Cloudflare Dashboard on the
-`dreammaker-groupsoft.ir` zone.
+By default, this app's `bin/run-all.sh` **never modifies** Cloudflare
+settings — `scripts/40-cloudflare.sh` only reads current state and
+reports drift. Use this checklist to apply every gap by hand.
+
+Two opt-in automation modes exist if you'd rather not touch the
+dashboard:
+
+| Script | Token requirement | What it does |
+|---|---|---|
+| `scripts/41-cloudflare-apply.sh` | `CF_API_TOKEN` with `Zone Settings:Edit` + `DNS:Edit` + `Cache Rules:Edit` | PATCHes/POSTs/PUTs to converge the zone to `CF_EXPECT_*` in `config.env`. Requires `CF_APPLY_CONFIRM=YES`. |
+| `scripts/42-cloudflare-mint.sh` | `CF_BOOTSTRAP_TOKEN` with `User → API Tokens → Edit` | Mints a 15-minute zone-scoped child token, runs apply with it, then revokes the child via a `trap EXIT` (always, even on apply failure). |
+
+The rest of this document is the manual fallback.
 
 > If you want the read-only verification output, export a token as
 > `CF_API_TOKEN` in `config.env` (or in the environment) before running
