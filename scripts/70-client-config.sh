@@ -24,13 +24,21 @@ mkdir -p "$OUT"
 
 # Map of template -> output filename.
 declare -A files=(
-    ["v2ray-reality.tpl.json"]="reality.json"
-    ["v2ray-vless-ws-cdn.tpl.json"]="vless-ws-cdn.json"
-    ["v2ray-vmess-ws.tpl.json"]="vmess-ws.json"
-    ["v2ray-trojan-ws.tpl.json"]="trojan-ws.json"
-    ["v2ray-xhttp.tpl.json"]="xhttp.json"
-    ["v2ray-wss-cdn.tpl.json"]="wss-cdn.json"
-    ["v2ray-grpc-cdn.tpl.json"]="grpc-cdn.json"
+    # 5 direct (Reality) variants
+    ["v2ray-reality.tpl.json"]="reality-443.json"
+    ["v2ray-reality-grpc.tpl.json"]="reality-grpc-8443.json"
+    ["v2ray-reality-xhttp.tpl.json"]="reality-xhttp-2095.json"
+    ["v2ray-trojan-reality.tpl.json"]="trojan-reality-2087.json"
+    # 4 CDN-fronted (plaintext through Cloudflare)
+    ["v2ray-vless-ws-cdn.tpl.json"]="cdn-vless-ws-2086.json"
+    ["v2ray-vmess-ws.tpl.json"]="cdn-vmess-ws-2082.json"
+    ["v2ray-trojan-ws.tpl.json"]="cdn-trojan-ws-2052.json"
+    ["v2ray-xhttp.tpl.json"]="cdn-xhttp-8880.json"
+    # 1 Shadowsocks
+    ["v2ray-shadowsocks.tpl.json"]="shadowsocks-8388.json"
+    # Legacy CF-edge-fix templates (not deployed but kept for completeness)
+    ["v2ray-wss-cdn.tpl.json"]="legacy-wss-cdn.json"
+    ["v2ray-grpc-cdn.tpl.json"]="legacy-grpc-cdn.json"
 )
 
 # All placeholder -> value substitutions in one place.
@@ -43,7 +51,8 @@ substitute() {
         -e "s#__V2_UUID__#${V2_UUID:-${UUID}}#g" \
         -e "s#__V2_REALITY_PUB_KEY__#${V2_REALITY_PUB_KEY:-${PUB_KEY}}#g" \
         -e "s#__V2_REALITY_SHORT_ID__#${V2_REALITY_SHORT_ID:-}#g" \
-        -e "s#__V2_REALITY_SNI__#${V2_REALITY_SNI:-www.google.com}#g" \
+        -e "s#__V2_REALITY_SNI__#${V2_REALITY_SNI:-www.digikala.com}#g" \
+        -e "s#__V2_REALITY_2095_PATH__#${V2_REALITY_2095_PATH:-/r}#g" \
         -e "s#__V2_TROJAN_PASSWORD__#${V2_TROJAN_PASSWORD:-CHANGE_ME}#g" \
         -e "s#__V2_WS_PATH__#${V2_WS_PATH:-/ws-vless}#g" \
         -e "s#__V2_WS_PORT__#${V2_WS_PORT:-2086}#g" \
@@ -53,6 +62,10 @@ substitute() {
         -e "s#__V2_TROJAN_PORT__#${V2_TROJAN_PORT:-2052}#g" \
         -e "s#__V2_XHTTP_PATH__#${V2_XHTTP_PATH:-/xhttp-cdn}#g" \
         -e "s#__V2_XHTTP_PORT__#${V2_XHTTP_PORT:-8880}#g" \
+        -e "s#__V2_SS_METHOD__#${V2_SS_METHOD:-2022-blake3-aes-128-gcm}#g" \
+        -e "s#__V2_SS_PASSWORD__#${V2_SS_PASSWORD:-CHANGE_ME}#g" \
+        -e "s#__V2_SS_PORT__#${V2_SS_PORT:-8388}#g" \
+        -e "s#__V2_GRPC_SERVICE_NAME__#${V2_GRPC_SERVICE_NAME:-dreammaker-grpc}#g" \
         -e "s#__WSS_PUBLIC_PORT__#${WSS_PUBLIC_PORT:-2083}#g" \
         -e "s#__GRPC_PUBLIC_PORT__#${GRPC_PUBLIC_PORT:-2053}#g" \
         -e "s#__GRPC_SERVICE_NAME__#${GRPC_SERVICE_NAME:-dreammaker-grpc}#g"
@@ -80,46 +93,75 @@ links_file="${OUT}/links.txt"
 
     cdn="${CDN_SUB}"
     uuid="${V2_UUID:-${UUID}}"
+    pbk="${V2_REALITY_PUB_KEY:-${PUB_KEY}}"
+    sid="${V2_REALITY_SHORT_ID:-}"
+    sni="${V2_REALITY_SNI:-www.digikala.com}"
 
-    # Reality 443 — direct to IP, NOT through CF
-    echo "## VLESS Reality (port 443, direct to IP, SNI=${V2_REALITY_SNI:-www.digikala.com})"
-    echo "vless://${uuid}@${SERVER_IP}:443?security=reality&type=tcp&flow=xtls-rprx-vision&sni=${V2_REALITY_SNI:-www.digikala.com}&fp=chrome&pbk=${V2_REALITY_PUB_KEY:-${PUB_KEY}}&sid=${V2_REALITY_SHORT_ID:-}#DM-Reality-443"
+    echo "# === DIRECT (Reality) — bypass Cloudflare; use server IP ==="
     echo
 
-    # CDN: VLESS WS via CF :2086 (CF-HTTP, plaintext to origin)
-    echo "## VLESS WS via CDN (cdn.*:${V2_WS_PORT:-2086}, no TLS — CF terminates)"
+    echo "## VLESS Reality TCP (port 443, SNI rotation incl. ${sni})"
+    echo "vless://${uuid}@${SERVER_IP}:443?security=reality&type=tcp&flow=xtls-rprx-vision&sni=${sni}&fp=chrome&pbk=${pbk}&sid=${sid}#DM-Reality-443"
+    echo
+
+    echo "## VLESS Reality TCP (port 2096, speedtest SNI)"
+    echo "vless://${uuid}@${SERVER_IP}:2096?security=reality&type=tcp&flow=xtls-rprx-vision&sni=www.speedtest.net&fp=chrome&pbk=${pbk}&sid=${sid}#DM-Reality-2096-Speedtest"
+    echo
+
+    echo "## VLESS Reality gRPC (port 8443, serviceName=${V2_GRPC_SERVICE_NAME:-dreammaker-grpc})"
+    echo "vless://${uuid}@${SERVER_IP}:8443?security=reality&type=grpc&serviceName=${V2_GRPC_SERVICE_NAME:-dreammaker-grpc}&mode=gun&sni=${sni}&fp=chrome&pbk=${pbk}&sid=${sid}#DM-Reality-gRPC-8443"
+    echo
+
+    echo "## VLESS Reality XHTTP (port 2095, path=${V2_REALITY_2095_PATH:-/r})"
+    xhttp_2095_enc="$(urlencode_path "${V2_REALITY_2095_PATH:-/r}")"
+    echo "vless://${uuid}@${SERVER_IP}:2095?security=reality&type=xhttp&path=${xhttp_2095_enc}&mode=auto&sni=${sni}&fp=chrome&pbk=${pbk}&sid=${sid}#DM-Reality-XHTTP-2095"
+    echo
+
+    echo "## Trojan Reality TCP (port 2087, SNI=www.aparat.com)"
+    echo "trojan://${V2_TROJAN_PASSWORD:-CHANGE_ME}@${SERVER_IP}:2087?security=reality&type=tcp&sni=www.aparat.com&fp=chrome&pbk=${pbk}&sid=${sid}#DM-Trojan-Reality-2087"
+    echo
+
+    echo "# === CDN (plaintext via Cloudflare on CF-HTTP-group ports) ==="
+    echo
+
+    echo "## VLESS WS via CDN (cdn.*:${V2_WS_PORT:-2086}, plaintext + CF TLS)"
     ws_path_enc="$(urlencode_path "${V2_WS_PATH:-/ws-vless}")"
     echo "vless://${uuid}@${cdn}:${V2_WS_PORT:-2086}?type=ws&security=none&path=${ws_path_enc}&host=${cdn}#DM-CDN-VLESS-WS"
     echo
 
-    # CDN: VMess WS via CF :2082
-    echo "## VMess WS via CDN (cdn.*:${V2_VMESS_PORT:-2082}, no TLS — CF terminates)"
+    echo "## VMess WS via CDN (cdn.*:${V2_VMESS_PORT:-2082})"
     vmess_json=$(printf '{"v":"2","ps":"DM-CDN-VMess-WS","add":"%s","port":"%s","id":"%s","aid":"0","scy":"auto","net":"ws","type":"none","host":"%s","path":"%s","tls":""}' \
         "${cdn}" "${V2_VMESS_PORT:-2082}" "${uuid}" "${cdn}" "${V2_VMESS_PATH:-/ws-vmess}")
     echo "vmess://$(printf '%s' "$vmess_json" | base64 -w0)"
     echo
 
-    # CDN: Trojan WS via CF :2052
-    echo "## Trojan WS via CDN (cdn.*:${V2_TROJAN_PORT:-2052}, no TLS — CF terminates)"
+    echo "## Trojan WS via CDN (cdn.*:${V2_TROJAN_PORT:-2052})"
     trojan_path_enc="$(urlencode_path "${V2_TROJAN_PATH:-/ws-trojan}")"
     echo "trojan://${V2_TROJAN_PASSWORD:-CHANGE_ME}@${cdn}:${V2_TROJAN_PORT:-2052}?type=ws&security=none&path=${trojan_path_enc}&host=${cdn}#DM-CDN-Trojan-WS"
     echo
 
-    # CDN: VLESS XHTTP via CF :8880
-    echo "## VLESS XHTTP via CDN (cdn.*:${V2_XHTTP_PORT:-8880}, no TLS — CF terminates)"
+    echo "## VLESS XHTTP via CDN (cdn.*:${V2_XHTTP_PORT:-8880})"
     xhttp_path_enc="$(urlencode_path "${V2_XHTTP_PATH:-/xhttp-cdn}")"
     echo "vless://${uuid}@${cdn}:${V2_XHTTP_PORT:-8880}?type=xhttp&security=none&path=${xhttp_path_enc}&host=${cdn}&mode=auto#DM-CDN-VLESS-XHTTP"
     echo
 
-    # CF Edge Fix WSS 2083
-    echo "## CF-Edge-Fix WSS via nginx (port ${WSS_PUBLIC_PORT:-2083})"
-    echo "vless://${UUID}@${CDN_SUB}:${WSS_PUBLIC_PORT:-2083}?encryption=none&security=tls&sni=${CDN_SUB}&type=ws&path=%2F#DM-CF-WSS-${WSS_PUBLIC_PORT:-2083}"
+    echo "# === Shadowsocks (direct) ==="
     echo
 
-    # CF Edge Fix gRPC 2053
-    echo "## CF-Edge-Fix gRPC via nginx (port ${GRPC_PUBLIC_PORT:-2053})"
-    echo "vless://${UUID}@${CDN_SUB}:${GRPC_PUBLIC_PORT:-2053}?encryption=none&security=tls&sni=${CDN_SUB}&type=grpc&serviceName=${GRPC_SERVICE_NAME:-dreammaker-grpc}&mode=gun#DM-CF-gRPC-${GRPC_PUBLIC_PORT:-2053}"
+    echo "## Shadowsocks 2022 (port ${V2_SS_PORT:-8388}, ${V2_SS_METHOD:-2022-blake3-aes-128-gcm})"
+    ss_userinfo=$(printf '%s:%s' "${V2_SS_METHOD:-2022-blake3-aes-128-gcm}" "${V2_SS_PASSWORD:-CHANGE_ME}" | base64 -w0)
+    echo "ss://${ss_userinfo}@${SERVER_IP}:${V2_SS_PORT:-8388}#DM-Shadowsocks-8388"
     echo
+
+    echo "# === Notes ==="
+    echo "# - Reality endpoints connect DIRECTLY to ${SERVER_IP} (NOT via Cloudflare)."
+    echo "# - CDN endpoints connect via cdn.dreammaker-groupsoft.ir (Cloudflare proxied)."
+    echo "# - All clients share the same UUID: ${uuid}"
+    echo "# - Reality public key: ${pbk}"
+    echo "# - Reality short id: ${sid}"
+    echo "# - Trojan password (shared between :2087 Reality and :2052 CDN): ${V2_TROJAN_PASSWORD:-CHANGE_ME}"
+    echo "# - Shadowsocks method: ${V2_SS_METHOD:-2022-blake3-aes-128-gcm}, password shared with Trojan."
+
 } > "$links_file"
 ok "wrote ${links_file}"
 

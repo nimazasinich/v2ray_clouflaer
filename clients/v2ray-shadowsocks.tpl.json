@@ -1,0 +1,29 @@
+{
+  "log": { "loglevel": "warning" },
+  "inbounds": [
+    { "port": 10808, "protocol": "socks", "settings": { "auth": "noauth", "udp": true }, "tag": "socks-in" },
+    { "port": 10809, "protocol": "http", "tag": "http-in" }
+  ],
+  "outbounds": [
+    {
+      "protocol": "shadowsocks",
+      "settings": {
+        "servers": [{
+          "address": "__SERVER_IP__",
+          "port": __V2_SS_PORT__,
+          "method": "__V2_SS_METHOD__",
+          "password": "__V2_SS_PASSWORD__"
+        }]
+      },
+      "streamSettings": { "network": "tcp" },
+      "tag": "proxy"
+    },
+    { "protocol": "freedom", "tag": "direct" }
+  ],
+  "routing": {
+    "rules": [
+      { "type": "field", "outboundTag": "direct", "domain": ["geosite:private"] },
+      { "type": "field", "outboundTag": "direct", "ip": ["geoip:private"] }
+    ]
+  }
+}
