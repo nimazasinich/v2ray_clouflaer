@@ -19,8 +19,8 @@ settings:
 |------|------|-----|
 | 1 | TLS WebSocket inbound on `:2083` | nginx TLS → `127.0.0.1:8880` xray WS |
 | 2 | TLS gRPC inbound on `:2053` | nginx HTTP/2 → `127.0.0.1:50051` xray gRPC (added to xray config) |
-| 3 | Cloudflare WebSocket zone setting | API: ensure `on` |
-| 4 | Cloudflare cache bypass for CDN host | API: cache-rule on `cdn.<domain>` |
+| 3 | Cloudflare WebSocket zone setting | **read-only** verification + manual checklist (see `docs/CLOUDFLARE-MANUAL.md`) |
+| 4 | Cloudflare cache bypass for CDN host | **read-only** verification + manual checklist |
 | 5 | Append new vless links | `/root/dreammaker-credentials.txt` (never overwritten) |
 | 6 | Health snapshot | services, ports, cert, WSS/gRPC probes |
 
@@ -102,8 +102,11 @@ vless://<UUID>@cdn.dreammaker-groupsoft.ir:2053?encryption=none&security=tls&sni
   timestamp.
 - `scripts/50-links.sh` only **appends** to the credentials file, and skips
   when both links are already present.
-- `scripts/40-cloudflare.sh` is a complete no-op if no CF API token is
-  available: it just prints the manual dashboard steps.
+- `scripts/40-cloudflare.sh` is strictly **read-only** — it never PATCHes,
+  POSTs, or PUTs to the Cloudflare API. With a token it reads the current
+  WebSocket setting and cache rules; without a token it's a complete no-op.
+  All Cloudflare mutations are operator-driven via the dashboard following
+  `docs/CLOUDFLARE-MANUAL.md`.
 - If certbot's `--nginx` plugin fails because port 80 is busy, the SSL
   script transparently falls back to `--standalone` and restarts nginx.
 
@@ -113,5 +116,5 @@ vless://<UUID>@cdn.dreammaker-groupsoft.ir:2053?encryption=none&security=tls&sni
 - [x] gRPC on `:2053` is reachable (non-timeout)
 - [x] Cert covers `dreammaker-groupsoft.ir` and `cdn.dreammaker-groupsoft.ir`
 - [x] Credentials file has both new links
-- [x] CF WebSocket setting is `on` (or noted for manual action)
+- [x] CF WebSocket setting is `on` (verified read-only; toggled manually in dashboard)
 - [x] Existing Reality inbounds untouched (`443/2095/2096/2087/8443`)
