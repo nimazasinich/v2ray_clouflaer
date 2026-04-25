@@ -628,23 +628,37 @@ The token-test snippet in Appendix B works for whatever token you have.
 | Zone ID | `7521f025c7660ad0f5ab6c57d787fa6f` |
 | Page Rule for cache bypass | id `b6fdf7355ecfbbcb44355cb09aca997e`, status `active`, cdn.*/* → cache_level=bypass |
 
-### 7.4 v2.0 protocol identities
+### 7.4 v2.0 protocol identities — LIVE (verified 2026-04-25T07:08Z)
 
-These are reproduced in `config.env.example` (committed) — they are the
-public-facing knobs every client config needs:
+These are reproduced in `config.env.example` (committed). They are the
+public-facing knobs every client config needs.
+
+> **Note**: Earlier versions of `config.env.example` had **incorrect**
+> example values copied from the v2.0 deployment guide. The values
+> below are the actual live values on the server — verified by reading
+> `/usr/local/etc/xray/config.json` over SSH. Any client config or
+> share-link generated before commit `f60bbc4` (2026-04-25) used the
+> wrong UUID/keys and would fail authentication.
 
 | Field | Value | Sensitivity |
 |---|---|---|
-| Primary UUID (Reality + CDN) | `9f05b292-4922-49ff-a939-381de4f8d193` | client identity — rotate if leak suspected |
-| Reality public key | `WZ3L5tyOq3AUChLrxoi3aXqQzbjYt-gXjtVSWAaArkc` | public; safe to commit |
+| Primary UUID (Reality + CDN, all inbounds) | `13e8b080-6162-4d51-98e4-67611aa5f7f0` | rotate if leak suspected |
+| Reality public key | `oBavVYJOvTk1jhyAL6m8yDGCksDA1vhY7q4VyZypkUM` | public; safe to commit |
+| Reality private key (server-side) | `6H1sXCkdhMzYCyrcFDbkViy92KslvB22zJuVsnC6rWg` | **secret**; on server only |
 | Reality short ID | `5dadd144264d28c4` | public-ish; safe to commit |
-| Default Reality SNI for client | `www.digikala.com` | safe |
-| Trojan password | (placeholder weak value in `config.env.example`; rotate to ≥ 16 chars in production) | secret |
+| Default Reality SNI for client | `www.digikala.com` (apex 443) | rotates per-port |
+| Trojan password (shared :2087 + :2052) | `dlB9unRG/vA26ERwJHehHA==` | **secret** |
+| Shadowsocks method | `2022-blake3-aes-128-gcm` | public |
+| Shadowsocks password | `dlB9unRG/vA26ERwJHehHA==` (same as Trojan) | **secret** |
 | gRPC service name | `dreammaker-grpc` | safe |
+| Reality+XHTTP path (port 2095) | `/r` | safe |
+| CDN WS paths | `/ws-vless` `:2086`, `/ws-vmess` `:2082`, `/ws-trojan` `:2052` | safe |
+| CDN XHTTP path | `/xhttp-cdn` `:8880` | safe |
 
-The Reality **private key** is on the server in
-`/usr/local/etc/xray/config.json`. It was visible in earlier config
-dumps; consider regenerating with `xray x25519`.
+The Reality **private key** is on the server. It was visible in earlier
+config dumps in this conversation; **consider regenerating** with
+`xray x25519`. After regenerating, every client must be updated with
+the new public key.
 
 ### 7.5 CF-edge-fix UUID (separate identity for the WSS:2083/gRPC:2053 attempts; now historical)
 
