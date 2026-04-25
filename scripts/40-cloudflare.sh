@@ -155,9 +155,27 @@ check_setting "Minimum TLS Version"      "/zones/${CF_ZONE_ID}/settings/min_tls_
     "${CF_EXPECT_MIN_TLS:-1.2}" \
     "SSL/TLS → Edge Certificates → Minimum TLS Version = 1.2"
 
-check_setting "TLS 1.3"                  "/zones/${CF_ZONE_ID}/settings/tls_1_3" \
-    "${CF_EXPECT_TLS_1_3:-on}" \
-    "SSL/TLS → Edge Certificates → TLS 1.3 = On"
+# "zrt" is CF-speak for "TLS 1.3 + 0-RTT enabled" — treat it as on if the
+# expected value is "on" so we don't false-positive a drift.
+expected_tls13="${CF_EXPECT_TLS_1_3:-on}"
+log "reading TLS 1.3..."
+tls13_resp="$(cf GET "/zones/${CF_ZONE_ID}/settings/tls_1_3")"
+tls13_parsed="$(parse_setting "$tls13_resp")"
+case "$tls13_parsed" in
+    VALUE=on|VALUE=zrt)
+        if [[ "$expected_tls13" == "on" || "$expected_tls13" == "zrt" ]]; then
+            ok "TLS 1.3 = ${tls13_parsed#VALUE=} (expected)"
+        else
+            warn "TLS 1.3 = ${tls13_parsed#VALUE=} (expected ${expected_tls13})"
+            manual_add "SSL/TLS → Edge Certificates → TLS 1.3 = ${expected_tls13} (currently: ${tls13_parsed#VALUE=})"
+        fi ;;
+    VALUE=*)
+        warn "TLS 1.3 = ${tls13_parsed#VALUE=} (expected on/zrt)"
+        manual_add "SSL/TLS → Edge Certificates → TLS 1.3 = On (currently: ${tls13_parsed#VALUE=})" ;;
+    ERROR=*)
+        warn "cannot read TLS 1.3 — ${tls13_parsed#ERROR=}"
+        manual_add "SSL/TLS → Edge Certificates → TLS 1.3 = On (token cannot read)" ;;
+esac
 
 check_setting "Always Use HTTPS"         "/zones/${CF_ZONE_ID}/settings/always_use_https" \
     "${CF_EXPECT_ALWAYS_USE_HTTPS:-off}" \
