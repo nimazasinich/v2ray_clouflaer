@@ -20,8 +20,8 @@ TARGET="${SSH_USER}@${SERVER_IP}"
 cmd="${1:-all}"
 
 case "$cmd" in
-    all|status|links|cf|wss|grpc|probe|cf-apply|cf-mint|cf-pagerule|ssl-expand|clients) ;;
-    *) die "unknown command: $cmd (expected: all|status|links|cf|cf-apply|cf-mint|cf-pagerule|wss|grpc|ssl-expand|clients|probe)" ;;
+    all|status|links|cf|wss|grpc|probe|cf-apply|cf-mint|cf-pagerule|ssl-expand|clients|two-variants) ;;
+    *) die "unknown command: $cmd (expected: all|status|links|cf|cf-apply|cf-mint|cf-pagerule|wss|grpc|ssl-expand|clients|two-variants|probe)" ;;
 esac
 
 require_cmd ssh rsync
@@ -68,4 +68,6 @@ case "$cmd" in
     clients)
         # Client configs render fine locally; no need to run on the server.
         bash "${HERE}/scripts/70-client-config.sh" ;;
+    two-variants)
+        bash "${HERE}/scripts/71-two-variants.sh" ;;
 esac
