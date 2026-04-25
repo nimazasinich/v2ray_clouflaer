@@ -1,0 +1,33 @@
+{
+  "log": { "loglevel": "warning" },
+  "inbounds": [
+    { "port": 10808, "protocol": "socks", "settings": { "auth": "noauth", "udp": true }, "tag": "socks-in" },
+    { "port": 10809, "protocol": "http", "tag": "http-in" }
+  ],
+  "outbounds": [
+    {
+      "protocol": "vless",
+      "settings": {
+        "vnext": [{
+          "address": "__SERVER_IP__",
+          "port": 2096,
+          "users": [{ "id": "__V2_UUID__", "encryption": "none" }]
+        }]
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "tls",
+        "tlsSettings": { "serverName": "__DOMAIN__" },
+        "xhttpSettings": { "path": "__V2_XHTTP_PATH__", "host": "__DOMAIN__" }
+      },
+      "tag": "proxy"
+    },
+    { "protocol": "freedom", "tag": "direct" }
+  ],
+  "routing": {
+    "rules": [
+      { "type": "field", "outboundTag": "direct", "domain": ["geosite:private"] },
+      { "type": "field", "outboundTag": "direct", "ip": ["geoip:private"] }
+    ]
+  }
+}

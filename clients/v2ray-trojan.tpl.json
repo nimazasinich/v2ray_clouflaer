@@ -1,0 +1,32 @@
+{
+  "log": { "loglevel": "warning" },
+  "inbounds": [
+    { "port": 10808, "protocol": "socks", "settings": { "auth": "noauth", "udp": true }, "tag": "socks-in" },
+    { "port": 10809, "protocol": "http", "tag": "http-in" }
+  ],
+  "outbounds": [
+    {
+      "protocol": "trojan",
+      "settings": {
+        "servers": [{
+          "address": "__SERVER_IP__",
+          "port": 8443,
+          "password": "__V2_TROJAN_PASSWORD__"
+        }]
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "tls",
+        "tlsSettings": { "serverName": "__DOMAIN__", "allowInsecure": false }
+      },
+      "tag": "proxy"
+    },
+    { "protocol": "freedom", "tag": "direct" }
+  ],
+  "routing": {
+    "rules": [
+      { "type": "field", "outboundTag": "direct", "domain": ["geosite:private"] },
+      { "type": "field", "outboundTag": "direct", "ip": ["geoip:private"] }
+    ]
+  }
+}
