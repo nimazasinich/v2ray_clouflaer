@@ -23,6 +23,7 @@ settings:
 | 4 | Cloudflare cache bypass for CDN host | **read-only** verification + manual checklist |
 | 5 | Append new vless links | `/root/dreammaker-credentials.txt` (never overwritten) |
 | 6 | Health snapshot | services, ports, cert, WSS/gRPC probes |
+| 6′ | Multi-protocol edge probe | TCP/TLS/WS/gRPC liveness for all v2.0 inbounds (`scripts/61-edge-probe.sh`) |
 
 The Reality inbounds (`443`, `2095`, `2096`, `2087`, `8443`) are **never
 touched**. The new gRPC inbound listens on `127.0.0.1` only — nginx is the
@@ -44,11 +45,15 @@ public face on `:2053`.
 │   ├── 31-nginx-grpc.sh       # STEP 2b — gRPC site on :2053
 │   ├── 40-cloudflare.sh       # STEP 3+4 — CF API verification/fixes
 │   ├── 50-links.sh            # STEP 5 — generate + APPEND vless:// links
-│   └── 60-status.sh           # STEP 6 — health snapshot
+│   ├── 60-status.sh           # STEP 6 — local health snapshot
+│   └── 61-edge-probe.sh       # external multi-protocol probe (Reality/WS/VMess/Trojan/XHTTP/Outline)
 ├── templates/
 │   ├── xray-wss.conf.tpl
 │   └── xray-grpc.conf.tpl
-├── config.env.example     # copy to config.env and adjust
+├── docs/
+│   ├── CLOUDFLARE-MANUAL.md      # manual dashboard checklist (DNS, SSL, WS, cache, etc.)
+│   └── DEPLOYMENT-GUIDE-v2.md    # full v2.0 multi-protocol runbook + live findings
+├── config.env.example     # copy to config.env and adjust (incl. CF_EXPECT_* state)
 └── tmp/                   # rolling backups of any file we replace
 ```
 

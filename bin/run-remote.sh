@@ -20,8 +20,8 @@ TARGET="${SSH_USER}@${SERVER_IP}"
 cmd="${1:-all}"
 
 case "$cmd" in
-    all|status|links|cf|wss|grpc) ;;
-    *) die "unknown command: $cmd (expected: all|status|links|cf|wss|grpc)" ;;
+    all|status|links|cf|wss|grpc|probe) ;;
+    *) die "unknown command: $cmd (expected: all|status|links|cf|wss|grpc|probe)" ;;
 esac
 
 require_cmd ssh rsync
@@ -46,4 +46,5 @@ case "$cmd" in
     cf)     ssh "$TARGET" "bash ${REMOTE_DIR}/scripts/40-cloudflare.sh" ;;
     wss)    ssh "$TARGET" "bash ${REMOTE_DIR}/scripts/10-ssl-cert.sh && bash ${REMOTE_DIR}/scripts/20-nginx-wss.sh" ;;
     grpc)   ssh "$TARGET" "bash ${REMOTE_DIR}/scripts/30-xray-grpc-inbound.sh && bash ${REMOTE_DIR}/scripts/31-nginx-grpc.sh" ;;
+    probe)  bash "${HERE}/scripts/61-edge-probe.sh" ;;
 esac

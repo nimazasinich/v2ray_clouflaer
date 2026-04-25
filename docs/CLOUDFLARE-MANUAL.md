@@ -20,6 +20,10 @@ checklist. Apply every step manually in the Cloudflare Dashboard on the
 > A token with only `Zone:Read` scope can resolve the zone id but the
 > WebSocket and Cache-Rules checks will report `10000: Authentication error`
 > — this is expected and surfaces as a warning, not a failure.
+>
+> See `docs/DEPLOYMENT-GUIDE-v2.md` for the full v2.0 deployment runbook
+> (Reality, WS+CDN, VMess, Trojan, XHTTP, Outline) that this checklist is
+> the Cloudflare half of.
 
 ---
 
@@ -34,16 +38,18 @@ checklist. Apply every step manually in the Cloudflare Dashboard on the
 - **SSL/TLS → Overview**
   - Mode: **Full** (or **Full (strict)** if origin cert chains validate).
 - **SSL/TLS → Edge Certificates**
-  - Minimum TLS Version: **TLS 1.2** (1.3 preferred).
-  - Always Use HTTPS: **On**.
-  - Automatic HTTPS Rewrites: **On**.
+  - Minimum TLS Version: **TLS 1.2**.
+  - TLS 1.3: **On**.
+  - Always Use HTTPS: **Off** (the v2.0 stack uses plaintext WS on :80).
+  - Automatic HTTPS Rewrites: **Off**.
 
-## 3. Network — WebSockets (CRITICAL)
+## 3. Network
 
-- **Dashboard → Network → WebSockets**
-- Toggle must be **On**.
-- If it is off, WSS on `:2083` will not work through the edge even if origin
-  returns 101.
+- **WebSockets**: **On** (critical — without this WSS via the edge fails)
+- **HTTP/2**: **On**
+- **HTTP/3 (QUIC)**: **On**
+- **0-RTT Connection Resumption**: **On**
+- **gRPC**: **On**
 
 ## 4. Caching — Cache Rules
 
