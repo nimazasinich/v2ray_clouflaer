@@ -9,15 +9,18 @@
       "protocol": "trojan",
       "settings": {
         "servers": [{
-          "address": "__SERVER_IP__",
-          "port": 8443,
+          "address": "__CDN_SUB__",
+          "port": __V2_TROJAN_PORT__,
           "password": "__V2_TROJAN_PASSWORD__"
         }]
       },
       "streamSettings": {
-        "network": "tcp",
-        "security": "tls",
-        "tlsSettings": { "serverName": "__DOMAIN__", "allowInsecure": false }
+        "network": "ws",
+        "security": "none",
+        "wsSettings": {
+          "path": "__V2_TROJAN_PATH__",
+          "headers": { "Host": "__CDN_SUB__" }
+        }
       },
       "tag": "proxy"
     },

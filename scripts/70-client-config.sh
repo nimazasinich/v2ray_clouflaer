@@ -27,7 +27,7 @@ declare -A files=(
     ["v2ray-reality.tpl.json"]="reality.json"
     ["v2ray-vless-ws-cdn.tpl.json"]="vless-ws-cdn.json"
     ["v2ray-vmess-ws.tpl.json"]="vmess-ws.json"
-    ["v2ray-trojan.tpl.json"]="trojan.json"
+    ["v2ray-trojan-ws.tpl.json"]="trojan-ws.json"
     ["v2ray-xhttp.tpl.json"]="xhttp.json"
     ["v2ray-wss-cdn.tpl.json"]="wss-cdn.json"
     ["v2ray-grpc-cdn.tpl.json"]="grpc-cdn.json"
@@ -45,9 +45,14 @@ substitute() {
         -e "s#__V2_REALITY_SHORT_ID__#${V2_REALITY_SHORT_ID:-}#g" \
         -e "s#__V2_REALITY_SNI__#${V2_REALITY_SNI:-www.google.com}#g" \
         -e "s#__V2_TROJAN_PASSWORD__#${V2_TROJAN_PASSWORD:-CHANGE_ME}#g" \
-        -e "s#__V2_WS_PATH__#${V2_WS_PATH:-/cdn}#g" \
-        -e "s#__V2_VMESS_PATH__#${V2_VMESS_PATH:-/vmess}#g" \
-        -e "s#__V2_XHTTP_PATH__#${V2_XHTTP_PATH:-/xhttp}#g" \
+        -e "s#__V2_WS_PATH__#${V2_WS_PATH:-/ws-vless}#g" \
+        -e "s#__V2_WS_PORT__#${V2_WS_PORT:-2086}#g" \
+        -e "s#__V2_VMESS_PATH__#${V2_VMESS_PATH:-/ws-vmess}#g" \
+        -e "s#__V2_VMESS_PORT__#${V2_VMESS_PORT:-2082}#g" \
+        -e "s#__V2_TROJAN_PATH__#${V2_TROJAN_PATH:-/ws-trojan}#g" \
+        -e "s#__V2_TROJAN_PORT__#${V2_TROJAN_PORT:-2052}#g" \
+        -e "s#__V2_XHTTP_PATH__#${V2_XHTTP_PATH:-/xhttp-cdn}#g" \
+        -e "s#__V2_XHTTP_PORT__#${V2_XHTTP_PORT:-8880}#g" \
         -e "s#__WSS_PUBLIC_PORT__#${WSS_PUBLIC_PORT:-2083}#g" \
         -e "s#__GRPC_PUBLIC_PORT__#${GRPC_PUBLIC_PORT:-2053}#g" \
         -e "s#__GRPC_SERVICE_NAME__#${GRPC_SERVICE_NAME:-dreammaker-grpc}#g"
@@ -73,31 +78,37 @@ links_file="${OUT}/links.txt"
     echo "# DreamMaker — generated $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
     echo
 
-    # Reality 443
-    echo "## VLESS Reality (port 443, direct to IP)"
-    echo "vless://${V2_UUID:-${UUID}}@${SERVER_IP}:443?security=reality&type=tcp&flow=xtls-rprx-vision&sni=${V2_REALITY_SNI:-www.google.com}&fp=chrome&pbk=${V2_REALITY_PUB_KEY:-${PUB_KEY}}&sid=${V2_REALITY_SHORT_ID:-}#Reality-443"
+    cdn="${CDN_SUB}"
+    uuid="${V2_UUID:-${UUID}}"
+
+    # Reality 443 — direct to IP, NOT through CF
+    echo "## VLESS Reality (port 443, direct to IP, SNI=${V2_REALITY_SNI:-www.digikala.com})"
+    echo "vless://${uuid}@${SERVER_IP}:443?security=reality&type=tcp&flow=xtls-rprx-vision&sni=${V2_REALITY_SNI:-www.digikala.com}&fp=chrome&pbk=${V2_REALITY_PUB_KEY:-${PUB_KEY}}&sid=${V2_REALITY_SHORT_ID:-}#DM-Reality-443"
     echo
 
-    # WS + CDN 80
-    echo "## VLESS WS + CDN (port 80)"
-    echo "vless://${V2_UUID:-${UUID}}@${DOMAIN}:80?type=ws&security=none&path=${V2_WS_PATH:-/cdn}&host=${DOMAIN}#CDN-WS-80"
+    # CDN: VLESS WS via CF :2086 (CF-HTTP, plaintext to origin)
+    echo "## VLESS WS via CDN (cdn.*:${V2_WS_PORT:-2086}, no TLS — CF terminates)"
+    ws_path_enc="$(urlencode_path "${V2_WS_PATH:-/ws-vless}")"
+    echo "vless://${uuid}@${cdn}:${V2_WS_PORT:-2086}?type=ws&security=none&path=${ws_path_enc}&host=${cdn}#DM-CDN-VLESS-WS"
     echo
 
-    # VMess 2052 (base64-encoded JSON)
-    echo "## VMess WS (port 2052)"
-    vmess_json=$(printf '{"v":"2","ps":"VMess-WS-2052","add":"%s","port":"2052","id":"%s","aid":"0","scy":"auto","net":"ws","type":"none","host":"%s","path":"%s","tls":""}' \
-        "${DOMAIN}" "${V2_UUID:-${UUID}}" "${DOMAIN}" "${V2_VMESS_PATH:-/vmess}")
+    # CDN: VMess WS via CF :2082
+    echo "## VMess WS via CDN (cdn.*:${V2_VMESS_PORT:-2082}, no TLS — CF terminates)"
+    vmess_json=$(printf '{"v":"2","ps":"DM-CDN-VMess-WS","add":"%s","port":"%s","id":"%s","aid":"0","scy":"auto","net":"ws","type":"none","host":"%s","path":"%s","tls":""}' \
+        "${cdn}" "${V2_VMESS_PORT:-2082}" "${uuid}" "${cdn}" "${V2_VMESS_PATH:-/ws-vmess}")
     echo "vmess://$(printf '%s' "$vmess_json" | base64 -w0)"
     echo
 
-    # Trojan 8443
-    echo "## Trojan TLS (port 8443)"
-    echo "trojan://${V2_TROJAN_PASSWORD:-CHANGE_ME}@${SERVER_IP}:8443?security=tls&sni=${DOMAIN}&type=tcp#Trojan-8443"
+    # CDN: Trojan WS via CF :2052
+    echo "## Trojan WS via CDN (cdn.*:${V2_TROJAN_PORT:-2052}, no TLS — CF terminates)"
+    trojan_path_enc="$(urlencode_path "${V2_TROJAN_PATH:-/ws-trojan}")"
+    echo "trojan://${V2_TROJAN_PASSWORD:-CHANGE_ME}@${cdn}:${V2_TROJAN_PORT:-2052}?type=ws&security=none&path=${trojan_path_enc}&host=${cdn}#DM-CDN-Trojan-WS"
     echo
 
-    # XHTTP 2096
-    echo "## VLESS XHTTP (port 2096)"
-    echo "vless://${V2_UUID:-${UUID}}@${SERVER_IP}:2096?security=tls&sni=${DOMAIN}&type=xhttp&path=${V2_XHTTP_PATH:-/xhttp}&host=${DOMAIN}#XHTTP-2096"
+    # CDN: VLESS XHTTP via CF :8880
+    echo "## VLESS XHTTP via CDN (cdn.*:${V2_XHTTP_PORT:-8880}, no TLS — CF terminates)"
+    xhttp_path_enc="$(urlencode_path "${V2_XHTTP_PATH:-/xhttp-cdn}")"
+    echo "vless://${uuid}@${cdn}:${V2_XHTTP_PORT:-8880}?type=xhttp&security=none&path=${xhttp_path_enc}&host=${cdn}&mode=auto#DM-CDN-VLESS-XHTTP"
     echo
 
     # CF Edge Fix WSS 2083

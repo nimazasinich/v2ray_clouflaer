@@ -9,16 +9,18 @@
       "protocol": "vless",
       "settings": {
         "vnext": [{
-          "address": "__SERVER_IP__",
-          "port": 2096,
+          "address": "__CDN_SUB__",
+          "port": __V2_XHTTP_PORT__,
           "users": [{ "id": "__V2_UUID__", "encryption": "none" }]
         }]
       },
       "streamSettings": {
         "network": "xhttp",
-        "security": "tls",
-        "tlsSettings": { "serverName": "__DOMAIN__" },
-        "xhttpSettings": { "path": "__V2_XHTTP_PATH__", "host": "__DOMAIN__" }
+        "security": "none",
+        "xhttpSettings": {
+          "path": "__V2_XHTTP_PATH__",
+          "host": "__CDN_SUB__"
+        }
       },
       "tag": "proxy"
     },

@@ -9,8 +9,8 @@
       "protocol": "vless",
       "settings": {
         "vnext": [{
-          "address": "__DOMAIN__",
-          "port": 80,
+          "address": "__CDN_SUB__",
+          "port": __V2_WS_PORT__,
           "users": [{ "id": "__V2_UUID__", "encryption": "none" }]
         }]
       },
@@ -19,7 +19,7 @@
         "security": "none",
         "wsSettings": {
           "path": "__V2_WS_PATH__",
-          "headers": { "Host": "__DOMAIN__" }
+          "headers": { "Host": "__CDN_SUB__" }
         }
       },
       "tag": "proxy"
