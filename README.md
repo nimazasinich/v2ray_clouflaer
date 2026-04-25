@@ -46,6 +46,7 @@ public face on `:2053`.
 │   ├── 40-cloudflare.sh       # STEP 3+4 — CF API READ-ONLY verifier (default)
 │   ├── 41-cloudflare-apply.sh # OPT-IN — apply zone state to CF_EXPECT_*
 │   ├── 42-cloudflare-mint.sh  # OPT-IN — mint scoped child token, apply, revoke
+│   ├── 44-cloudflare-pagerule-cache.sh  # OPT-IN — Page Rule fallback for cache bypass
 │   ├── 43-ssl-expand.sh       # expand LE cert SAN to cover apex + cdn.* (fixes HTTP 525)
 │   ├── 50-links.sh            # STEP 5 — generate + APPEND vless:// links
 │   ├── 60-status.sh           # STEP 6 — local health snapshot
@@ -91,7 +92,8 @@ The Cloudflare side has three modes, picked at runtime:
 | Mode | Trigger | What it does | Mutates CF? |
 |------|---------|--------------|-------------|
 | **Verify (default)** | always | Reads 9 zone settings + DNS + cache rules; reports drift vs `CF_EXPECT_*`; prints dynamic manual checklist | No |
-| **Apply** | `scripts/41-cloudflare-apply.sh` + `CF_APPLY_CONFIRM=YES` + `CF_API_TOKEN` with edit scopes | PATCHes settings + ensures DNS record + adds cache-bypass rule to match `CF_EXPECT_*` | Yes |
+| **Apply** | `scripts/41-cloudflare-apply.sh` + `CF_APPLY_CONFIRM=YES` + `CF_API_TOKEN` with edit scopes | PATCHes 8 zone settings + ensures DNS record + tries Cache Rule (Cache Rules:Edit) | Yes |
+| **Apply (Page Rule fallback)** | `scripts/44-cloudflare-pagerule-cache.sh` + `CF_APPLY_CONFIRM=YES` + `CF_API_TOKEN` with `Page Rules:Edit` | Same end-state as Cache Rule (cache_level=bypass for `cdn.*/`) but uses the legacy Page Rules engine; only needs the much wider `Page Rules:Edit` scope | Yes |
 | **Mint→Apply→Revoke** | `scripts/42-cloudflare-mint.sh` + `CF_APPLY_CONFIRM=YES` + `CF_BOOTSTRAP_TOKEN` with `User:API Tokens:Edit` | Bootstrap token mints a 15-min zone-scoped child token, child applies, parent revokes child via `trap EXIT` | Yes (self-cleaning) |
 
 `bin/run-all.sh` only ever invokes Verify. Mutating scripts must be
@@ -106,10 +108,11 @@ cp config.env.example config.env
 ./bin/run-remote.sh status    # only the health snapshot
 ./bin/run-remote.sh links     # only re-emit/append the new links
 ./bin/run-remote.sh cf        # read-only Cloudflare verification
-CF_APPLY_CONFIRM=YES ./bin/run-remote.sh cf-apply   # apply to match CF_EXPECT_*
-CF_APPLY_CONFIRM=YES ./bin/run-remote.sh cf-mint    # mint→apply→revoke
-./bin/run-remote.sh ssl-expand                      # expand LE cert SAN
-./bin/run-remote.sh clients                         # render v2ray client configs locally
+CF_APPLY_CONFIRM=YES ./bin/run-remote.sh cf-apply        # PATCH settings, DNS, modern Cache Rule
+CF_APPLY_CONFIRM=YES ./bin/run-remote.sh cf-pagerule     # Page Rule fallback for cache bypass
+CF_APPLY_CONFIRM=YES ./bin/run-remote.sh cf-mint         # full mint→apply→revoke
+./bin/run-remote.sh ssl-expand                            # expand LE cert SAN
+./bin/run-remote.sh clients                               # render v2ray client configs locally
 ```
 
 ### Client configs (rendered on demand)

@@ -428,7 +428,7 @@ using a token with `Zone Settings:Edit` scope:
 | Always Use HTTPS | off | `off` | `off` | already-ok |
 | Automatic HTTPS Rewrites | off | `on` | **`off`** | PATCH |
 | `cdn.*` DNS | A → IP, Proxied | A → 82.115.26.105, Proxied | unchanged | already-ok |
-| Cache Rules | bypass for `cdn.*` | unreadable | unreadable (token scope) | manual |
+| Cache Rules | bypass for `cdn.*` | unreadable | applied via legacy **Page Rule** (Token C has Page Rules:Edit) | `44-cloudflare-pagerule-cache.sh` |
 
 `tls_1_3=zrt` is Cloudflare's compound value meaning "TLS 1.3 + 0-RTT
 enabled together". When `CF_EXPECT_TLS_1_3=on` and `CF_EXPECT_0RTT=on`
