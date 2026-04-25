@@ -29,11 +29,5 @@
       "tag": "proxy"
     },
     { "protocol": "freedom", "tag": "direct" }
-  ],
-  "routing": {
-    "rules": [
-      { "type": "field", "outboundTag": "direct", "domain": ["geosite:private"] },
-      { "type": "field", "outboundTag": "direct", "ip": ["geoip:private"] }
-    ]
-  }
+  ]
 }
