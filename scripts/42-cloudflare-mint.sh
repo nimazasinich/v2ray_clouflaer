@@ -18,8 +18,16 @@
 #
 # This script never writes the bootstrap or child token to disk.
 set -euo pipefail
+_ENV_CF_APPLY_CONFIRM="${CF_APPLY_CONFIRM:-}"
+_ENV_CF_BOOTSTRAP_TOKEN="${CF_BOOTSTRAP_TOKEN:-}"
 . "$(dirname "$0")/../lib/common.sh"
 load_config
+if [[ -z "${CF_APPLY_CONFIRM:-}" && -n "$_ENV_CF_APPLY_CONFIRM" ]]; then
+    CF_APPLY_CONFIRM="$_ENV_CF_APPLY_CONFIRM"
+fi
+if [[ -z "${CF_BOOTSTRAP_TOKEN:-}" && -n "$_ENV_CF_BOOTSTRAP_TOKEN" ]]; then
+    CF_BOOTSTRAP_TOKEN="$_ENV_CF_BOOTSTRAP_TOKEN"
+fi
 
 section "MINT → APPLY → REVOKE — Cloudflare self-cleaning automation"
 

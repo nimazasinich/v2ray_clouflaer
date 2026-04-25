@@ -16,8 +16,12 @@
 # The corresponding read-only verifier (scripts/40-cloudflare.sh) should
 # be run before AND after this script.
 set -euo pipefail
+_ENV_CF_APPLY_CONFIRM="${CF_APPLY_CONFIRM:-}"
 . "$(dirname "$0")/../lib/common.sh"
 load_config
+if [[ -z "${CF_APPLY_CONFIRM:-}" && -n "$_ENV_CF_APPLY_CONFIRM" ]]; then
+    CF_APPLY_CONFIRM="$_ENV_CF_APPLY_CONFIRM"
+fi
 
 section "OPT-IN — Apply Cloudflare zone state to CF_EXPECT_*"
 
