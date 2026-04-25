@@ -1,0 +1,4 @@
+/remote-snapshot/
+*.config.json
+*.config.merged.json
+xray.config.json
