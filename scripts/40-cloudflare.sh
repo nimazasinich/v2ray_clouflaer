@@ -307,12 +307,46 @@ while IFS= read -r line; do
 done <<< "$cache_result"
 
 case "$cache_signal" in
-    COVERED)    ok "cache-bypass rule already covers host=${CDN_SUB}" ;;
-    MISSING)    warn "no cache-bypass rule covers host=${CDN_SUB}"
-                manual_add "Caching → Cache Rules → add: Hostname equals ${CDN_SUB} → Cache Status = Bypass." ;;
-    UNREADABLE) manual_add "Caching → Cache Rules → confirm Bypass rule for host=${CDN_SUB} (token cannot read; verify manually)." ;;
-    *)          manual_add "Caching → Cache Rules → confirm Bypass rule for host=${CDN_SUB}." ;;
+    COVERED)    ok "cache-bypass Cache Rule already covers host=${CDN_SUB}"; cache_solved="true" ;;
+    MISSING)    cache_solved="false" ;;
+    UNREADABLE) cache_solved="unknown" ;;
+    *)          cache_solved="unknown" ;;
 esac
+
+# --- Fallback: legacy Page Rules ----------------------------------------
+# If the modern Cache Rule is missing OR unreadable, check whether a Page
+# Rule with cache_level=bypass on cdn.* covers the same case. This is what
+# scripts/44-cloudflare-pagerule-cache.sh installs.
+if [[ "$cache_solved" != "true" ]]; then
+    log "checking legacy Page Rules for cache bypass coverage..."
+    pr_resp="$(cf GET "/zones/${CF_ZONE_ID}/pagerules?per_page=50" || true)"
+    pr_signal="$(CF_JSON="$pr_resp" CF_CDN="$CDN_SUB" python3 <<'PY'
+import json, os
+try: d = json.loads(os.environ["CF_JSON"])
+except Exception: print("UNREADABLE"); raise SystemExit(0)
+if not d.get("success"): print("UNREADABLE"); raise SystemExit(0)
+target = f"{os.environ['CF_CDN']}/*"
+for r in (d.get("result") or []):
+    if r.get("status") != "active": continue
+    targets = r.get("targets") or []
+    actions = r.get("actions") or []
+    if any((t.get("target") == "url" and (t.get("constraint") or {}).get("value") == target) for t in targets) \
+       and any((a.get("id") == "cache_level" and a.get("value") == "bypass") for a in actions):
+        print("COVERED"); raise SystemExit(0)
+print("MISSING")
+PY
+)"
+    case "$pr_signal" in
+        COVERED) ok "legacy Page Rule covers ${CDN_SUB}/* → cache_level=bypass (equivalent to Cache Rule)" ;;
+        MISSING) if [[ "$cache_solved" == "false" ]]; then
+                    warn "no Cache Rule and no Page Rule covers ${CDN_SUB}"
+                    manual_add "Caching: install bypass via 44-cloudflare-pagerule-cache.sh (recommended) OR add Cache Rule manually."
+                 else
+                    manual_add "Caching → confirm Bypass for host=${CDN_SUB} (Cache Rule unreadable, no matching Page Rule found)."
+                 fi ;;
+        UNREADABLE) manual_add "Caching → confirm Bypass for host=${CDN_SUB} (token cannot read either rule type)." ;;
+    esac
+fi
 
 echo
 print_manual_checklist
