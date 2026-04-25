@@ -9,6 +9,12 @@ aparat.com for these TLS+WS inbounds: that would not match the server cert.
 Backups on server before deploy: /usr/local/etc/xray/config.json.backup-* and
 /etc/nginx/sites-available.backup-* (20260425-080201).
 
+Post-verify bundle (2026-04-25, after health check + reboot):
+  /root/backup/backup-20260425_140658_pre-reboot/
+  (xray.config.json, xray-test.txt, ufw, nginx cdn-proxy + xray-*, ss-tlnp, xray.bin, MANIFEST;
+   pointer: /root/backup/last-backup-path.txt)
+  /root/diagnose_dreammaker.sh (updated diagnostic script; run for full report)
+
 Do not store production secrets in git; one-line client URLs are generated on demand.
 
 diagnose_dreammaker.sh: copy to /root on the server; uses DIAG_XRAY_CONFIG. Section 7
