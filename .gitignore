@@ -2,3 +2,5 @@
 *.config.json
 *.config.merged.json
 xray.config.json
+diagnose_output.txt
+dreammaker-diagnose-*.txt
