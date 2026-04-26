@@ -1,0 +1,10 @@
+# Merge into the server { } block that serves DOMAIN on port 443 (same FQDN as /health).
+# Point WEBROOT in update-subscription-nginx.sh to match or adjust alias path.
+
+location = /sub {
+  default_type text/plain;
+  charset utf-8;
+  add_header X-Content-Type-Options nosniff;
+  add_header Content-Disposition inline;
+  alias /var/www/cleanip-subscription/sub;
+}
