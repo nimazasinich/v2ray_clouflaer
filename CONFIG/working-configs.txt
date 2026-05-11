@@ -1,0 +1,75 @@
+# ══════════════════════════════════════════════════════════════════
+# DreamMaker — Working VLESS Configs (PRODUCTION, LIVE-FETCHED)
+# Generated:    2026-05-11 (live from dreammaker-tier0 worker)
+# Source:       https://dreammaker-groupsoft.ir/sub?uuid=<TIER_UUID>
+# Domain:       dreammaker-groupsoft.ir (server) → cdn.* (SNI/Host)
+# Backend:      82.115.26.105:2053 (Germany VPS)
+# Transport:    XHTTP primary, WebSocket fallback
+#
+# Differences vs canonical local copy:
+#   • server = dreammaker-groupsoft.ir (apex), NOT cdn subdomain
+#   • includes x_padding_bytes=100-1000 (XHTTP anti-fingerprint pad)
+#   • includes alpn=h2,http/1.1 on every link
+#   • XHTTP links omit `mode=auto` (Xray defaults to packet-up which is fine
+#     with the current inbound mode "stream-up" since clients auto-negotiate)
+#
+# USAGE
+#   1. Pick the tier you actually paid for.
+#   2. Import the XHTTP link first. Run "Test real delay" in v2rayNG.
+#   3. If XHTTP fails or shows > 3000ms, import the matching WS link.
+#   4. Each tier has its OWN UUID. Do not mix.
+#
+# KNOWN ISSUE
+#   DM-Pro-WS uses path /static/bundle.js-ws but Xray inbound on the VPS
+#   listens on /static/bundle-ws — that link WILL NOT CONNECT until either
+#   the worker emits /static/bundle-ws or the inbound is renamed.
+#   All other 13 links are correct end-to-end.
+# ══════════════════════════════════════════════════════════════════
+
+
+# ───────── PRIMARY (XHTTP) — try these first ─────────
+
+vless://7dd47c02-8dce-4b12-9dbc-7cdb95a9e10e@dreammaker-groupsoft.ir:443?encryption=none&type=xhttp&path=%2Fapi%2Fv1%2Fping&security=tls&host=cdn.dreammaker-groupsoft.ir&sni=cdn.dreammaker-groupsoft.ir&fp=chrome&alpn=h2%2Chttp%2F1.1&x_padding_bytes=100-1000#DM-Starter
+
+vless://92ebaa01-ec34-4601-a4dc-f6afdf822966@dreammaker-groupsoft.ir:443?encryption=none&type=xhttp&path=%2Fcdn%2Finit&security=tls&host=cdn.dreammaker-groupsoft.ir&sni=cdn.dreammaker-groupsoft.ir&fp=chrome&alpn=h2%2Chttp%2F1.1&x_padding_bytes=100-1000#DM-Basic
+
+vless://3d5e3adf-0912-4c78-9ca9-b87db334ce71@dreammaker-groupsoft.ir:443?encryption=none&type=xhttp&path=%2Fapp%2Fsync&security=tls&host=cdn.dreammaker-groupsoft.ir&sni=cdn.dreammaker-groupsoft.ir&fp=chrome&alpn=h2%2Chttp%2F1.1&x_padding_bytes=100-1000#DM-Standard
+
+vless://e8eb3d74-8e8c-4903-b878-8feb656ebb0c@dreammaker-groupsoft.ir:443?encryption=none&type=xhttp&path=%2Fapi%2Fv2%2Ffeed&security=tls&host=cdn.dreammaker-groupsoft.ir&sni=cdn.dreammaker-groupsoft.ir&fp=chrome&alpn=h2%2Chttp%2F1.1&x_padding_bytes=100-1000#DM-Plus
+
+vless://b3540a54-67dd-452a-b5d8-45d6407b8da5@dreammaker-groupsoft.ir:443?encryption=none&type=xhttp&path=%2Fstatic%2Fbundle.js&security=tls&host=cdn.dreammaker-groupsoft.ir&sni=cdn.dreammaker-groupsoft.ir&fp=chrome&alpn=h2%2Chttp%2F1.1&x_padding_bytes=100-1000#DM-Pro
+
+vless://2680152c-0dc3-4fdb-b366-e936358b121f@dreammaker-groupsoft.ir:443?encryption=none&type=xhttp&path=%2Fmedia%2Fstream&security=tls&host=cdn.dreammaker-groupsoft.ir&sni=cdn.dreammaker-groupsoft.ir&fp=chrome&alpn=h2%2Chttp%2F1.1&x_padding_bytes=100-1000#DM-Elite
+
+vless://89c0f294-3f94-4735-96cf-9c1aefdbcbb2@dreammaker-groupsoft.ir:443?encryption=none&type=xhttp&path=%2Fv2%2Fcontent%2Flive&security=tls&host=cdn.dreammaker-groupsoft.ir&sni=cdn.dreammaker-groupsoft.ir&fp=chrome&alpn=h2%2Chttp%2F1.1&x_padding_bytes=100-1000#DM-Unlimited
+
+
+# ───────── FALLBACK (WebSocket) — only if XHTTP fails ─────────
+
+vless://7dd47c02-8dce-4b12-9dbc-7cdb95a9e10e@dreammaker-groupsoft.ir:443?encryption=none&type=ws&path=%2Fapi%2Fv1%2Fping-ws&security=tls&host=cdn.dreammaker-groupsoft.ir&sni=cdn.dreammaker-groupsoft.ir&fp=chrome&alpn=h2%2Chttp%2F1.1&x_padding_bytes=100-1000#DM-Starter-WS
+
+vless://92ebaa01-ec34-4601-a4dc-f6afdf822966@dreammaker-groupsoft.ir:443?encryption=none&type=ws&path=%2Fcdn%2Finit-ws&security=tls&host=cdn.dreammaker-groupsoft.ir&sni=cdn.dreammaker-groupsoft.ir&fp=chrome&alpn=h2%2Chttp%2F1.1&x_padding_bytes=100-1000#DM-Basic-WS
+
+vless://3d5e3adf-0912-4c78-9ca9-b87db334ce71@dreammaker-groupsoft.ir:443?encryption=none&type=ws&path=%2Fapp%2Fsync-ws&security=tls&host=cdn.dreammaker-groupsoft.ir&sni=cdn.dreammaker-groupsoft.ir&fp=chrome&alpn=h2%2Chttp%2F1.1&x_padding_bytes=100-1000#DM-Standard-WS
+
+vless://e8eb3d74-8e8c-4903-b878-8feb656ebb0c@dreammaker-groupsoft.ir:443?encryption=none&type=ws&path=%2Fapi%2Fv2%2Ffeed-ws&security=tls&host=cdn.dreammaker-groupsoft.ir&sni=cdn.dreammaker-groupsoft.ir&fp=chrome&alpn=h2%2Chttp%2F1.1&x_padding_bytes=100-1000#DM-Plus-WS
+
+# ⚠ DM-Pro-WS BROKEN — worker emits /static/bundle.js-ws but Xray inbound = /static/bundle-ws
+#   Worker version (will NOT connect until tier0 is patched OR Xray inbound renamed):
+vless://b3540a54-67dd-452a-b5d8-45d6407b8da5@dreammaker-groupsoft.ir:443?encryption=none&type=ws&path=%2Fstatic%2Fbundle.js-ws&security=tls&host=cdn.dreammaker-groupsoft.ir&sni=cdn.dreammaker-groupsoft.ir&fp=chrome&alpn=h2%2Chttp%2F1.1&x_padding_bytes=100-1000#DM-Pro-WS-BROKEN
+#   Fixed version (matches current Xray inbound — USE THIS for Pro tier WS fallback):
+vless://b3540a54-67dd-452a-b5d8-45d6407b8da5@dreammaker-groupsoft.ir:443?encryption=none&type=ws&path=%2Fstatic%2Fbundle-ws&security=tls&host=cdn.dreammaker-groupsoft.ir&sni=cdn.dreammaker-groupsoft.ir&fp=chrome&alpn=h2%2Chttp%2F1.1&x_padding_bytes=100-1000#DM-Pro-WS-FIXED
+
+vless://2680152c-0dc3-4fdb-b366-e936358b121f@dreammaker-groupsoft.ir:443?encryption=none&type=ws&path=%2Fmedia%2Fstream-ws&security=tls&host=cdn.dreammaker-groupsoft.ir&sni=cdn.dreammaker-groupsoft.ir&fp=chrome&alpn=h2%2Chttp%2F1.1&x_padding_bytes=100-1000#DM-Elite-WS
+
+vless://89c0f294-3f94-4735-96cf-9c1aefdbcbb2@dreammaker-groupsoft.ir:443?encryption=none&type=ws&path=%2Fv2%2Fcontent%2Flive-ws&security=tls&host=cdn.dreammaker-groupsoft.ir&sni=cdn.dreammaker-groupsoft.ir&fp=chrome&alpn=h2%2Chttp%2F1.1&x_padding_bytes=100-1000#DM-Unlimited-WS
+
+
+# ───────── Use THIS NOW (Starter, XHTTP) ─────────
+# vless://7dd47c02-8dce-4b12-9dbc-7cdb95a9e10e@dreammaker-groupsoft.ir:443?encryption=none&type=xhttp&path=%2Fapi%2Fv1%2Fping&security=tls&host=cdn.dreammaker-groupsoft.ir&sni=cdn.dreammaker-groupsoft.ir&fp=chrome&alpn=h2%2Chttp%2F1.1&x_padding_bytes=100-1000#DM-Starter
+
+# ══════════════════════════════════════════════════════════════════
+# Subscription URL (auto-update in clients that support it):
+#   https://dreammaker-groupsoft.ir/sub?uuid=<TIER_UUID>
+# Returns base64 of all 14 links above. JSON view: append &format=json
+# ══════════════════════════════════════════════════════════════════

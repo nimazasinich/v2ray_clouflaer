@@ -1,0 +1,515 @@
+{
+  "log": {
+    "loglevel": "info",
+    "access": "/var/log/xray/access.log",
+    "error": "/var/log/xray/error.log"
+  },
+  "inbounds": [
+    {
+      "listen": "127.0.0.1",
+      "port": 11001,
+      "protocol": "vless",
+      "tag": "inbound-starter",
+      "settings": {
+        "clients": [
+          {
+            "id": "7dd47c02-8dce-4b12-9dbc-7cdb95a9e10e",
+            "level": 0
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "none",
+        "xhttpSettings": {
+          "path": "/api/v1/ping",
+          "host": "cdn.dreammaker-groupsoft.ir",
+          "mode": "stream-up"
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls"]
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 11101,
+      "protocol": "vless",
+      "tag": "inbound-starter-ws",
+      "settings": {
+        "clients": [
+          {
+            "id": "7dd47c02-8dce-4b12-9dbc-7cdb95a9e10e",
+            "level": 0
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "none",
+        "wsSettings": {
+          "path": "/api/v1/ping-ws",
+          "headers": {
+            "Host": "cdn.dreammaker-groupsoft.ir"
+          }
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls"]
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 11002,
+      "protocol": "vless",
+      "tag": "inbound-basic",
+      "settings": {
+        "clients": [
+          {
+            "id": "92ebaa01-ec34-4601-a4dc-f6afdf822966",
+            "level": 0
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "none",
+        "xhttpSettings": {
+          "path": "/cdn/init",
+          "host": "cdn.dreammaker-groupsoft.ir",
+          "mode": "stream-up"
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls"]
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 11102,
+      "protocol": "vless",
+      "tag": "inbound-basic-ws",
+      "settings": {
+        "clients": [
+          {
+            "id": "92ebaa01-ec34-4601-a4dc-f6afdf822966",
+            "level": 0
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "none",
+        "wsSettings": {
+          "path": "/cdn/init-ws",
+          "headers": {
+            "Host": "cdn.dreammaker-groupsoft.ir"
+          }
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls"]
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 11003,
+      "protocol": "vless",
+      "tag": "inbound-standard",
+      "settings": {
+        "clients": [
+          {
+            "id": "3d5e3adf-0912-4c78-9ca9-b87db334ce71",
+            "level": 0
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "none",
+        "xhttpSettings": {
+          "path": "/app/sync",
+          "host": "cdn.dreammaker-groupsoft.ir",
+          "mode": "stream-up"
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls"]
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 11103,
+      "protocol": "vless",
+      "tag": "inbound-standard-ws",
+      "settings": {
+        "clients": [
+          {
+            "id": "3d5e3adf-0912-4c78-9ca9-b87db334ce71",
+            "level": 0
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "none",
+        "wsSettings": {
+          "path": "/app/sync-ws",
+          "headers": {
+            "Host": "cdn.dreammaker-groupsoft.ir"
+          }
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls"]
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 11004,
+      "protocol": "vless",
+      "tag": "inbound-plus",
+      "settings": {
+        "clients": [
+          {
+            "id": "e8eb3d74-8e8c-4903-b878-8feb656ebb0c",
+            "level": 0
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "none",
+        "xhttpSettings": {
+          "path": "/api/v2/feed",
+          "host": "cdn.dreammaker-groupsoft.ir",
+          "mode": "stream-up"
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls"]
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 11104,
+      "protocol": "vless",
+      "tag": "inbound-plus-ws",
+      "settings": {
+        "clients": [
+          {
+            "id": "e8eb3d74-8e8c-4903-b878-8feb656ebb0c",
+            "level": 0
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "none",
+        "wsSettings": {
+          "path": "/api/v2/feed-ws",
+          "headers": {
+            "Host": "cdn.dreammaker-groupsoft.ir"
+          }
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls"]
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 11005,
+      "protocol": "vless",
+      "tag": "inbound-pro",
+      "settings": {
+        "clients": [
+          {
+            "id": "b3540a54-67dd-452a-b5d8-45d6407b8da5",
+            "level": 0
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "none",
+        "xhttpSettings": {
+          "path": "/static/bundle.js",
+          "host": "cdn.dreammaker-groupsoft.ir",
+          "mode": "stream-up"
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls"]
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 11105,
+      "protocol": "vless",
+      "tag": "inbound-pro-ws",
+      "settings": {
+        "clients": [
+          {
+            "id": "b3540a54-67dd-452a-b5d8-45d6407b8da5",
+            "level": 0
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "none",
+        "wsSettings": {
+          "path": "/static/bundle-ws",
+          "headers": {
+            "Host": "cdn.dreammaker-groupsoft.ir"
+          }
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls"]
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 11006,
+      "protocol": "vless",
+      "tag": "inbound-elite",
+      "settings": {
+        "clients": [
+          {
+            "id": "2680152c-0dc3-4fdb-b366-e936358b121f",
+            "level": 0
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "none",
+        "xhttpSettings": {
+          "path": "/media/stream",
+          "host": "cdn.dreammaker-groupsoft.ir",
+          "mode": "stream-up"
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls"]
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 11106,
+      "protocol": "vless",
+      "tag": "inbound-elite-ws",
+      "settings": {
+        "clients": [
+          {
+            "id": "2680152c-0dc3-4fdb-b366-e936358b121f",
+            "level": 0
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "none",
+        "wsSettings": {
+          "path": "/media/stream-ws",
+          "headers": {
+            "Host": "cdn.dreammaker-groupsoft.ir"
+          }
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls"]
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 11007,
+      "protocol": "vless",
+      "tag": "inbound-unlimited",
+      "settings": {
+        "clients": [
+          {
+            "id": "89c0f294-3f94-4735-96cf-9c1aefdbcbb2",
+            "level": 0
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "none",
+        "xhttpSettings": {
+          "path": "/v2/content/live",
+          "host": "cdn.dreammaker-groupsoft.ir",
+          "mode": "stream-up"
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls"]
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 11107,
+      "protocol": "vless",
+      "tag": "inbound-unlimited-ws",
+      "settings": {
+        "clients": [
+          {
+            "id": "89c0f294-3f94-4735-96cf-9c1aefdbcbb2",
+            "level": 0
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "none",
+        "wsSettings": {
+          "path": "/v2/content/live-ws",
+          "headers": {
+            "Host": "cdn.dreammaker-groupsoft.ir"
+          }
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls"]
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 11111,
+      "protocol": "dokodemo-door",
+      "tag": "api",
+      "settings": {
+        "address": "127.0.0.1"
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "UseIPv4",
+        "mark": 255
+      },
+      "tag": "direct"
+    },
+    {
+      "protocol": "socks",
+      "settings": {
+        "servers": [
+          {
+            "address": "127.0.0.1",
+            "port": 40000
+          }
+        ]
+      },
+      "tag": "warp"
+    },
+    {
+      "protocol": "blackhole",
+      "settings": {},
+      "tag": "block"
+    }
+  ],
+  "routing": {
+    "domainStrategy": "IPIfNonMatch",
+    "rules": [
+      {
+        "type": "field",
+        "inboundTag": ["api"],
+        "outboundTag": "api"
+      },
+      {
+        "type": "field",
+        "domain": ["geosite:private"],
+        "outboundTag": "block"
+      },
+      {
+        "type": "field",
+        "ip": ["geoip:private"],
+        "outboundTag": "block"
+      },
+      {
+        "type": "field",
+        "domain": [
+          "openai.com",
+          "api.openai.com",
+          "chat.openai.com",
+          "chatgpt.com"
+        ],
+        "outboundTag": "warp"
+      },
+      {
+        "type": "field",
+        "domain": ["geosite:category-ads-all"],
+        "outboundTag": "block"
+      },
+      {
+        "type": "field",
+        "network": "tcp,udp",
+        "outboundTag": "direct"
+      }
+    ]
+  },
+  "dns": {
+    "servers": [
+      {
+        "address": "https://1.1.1.1/dns-query",
+        "domains": ["geosite:geolocation-!cn"],
+        "queryStrategy": "UseIPv4"
+      },
+      {
+        "address": "https://8.8.8.8/dns-query",
+        "domains": ["geosite:geolocation-!cn"],
+        "queryStrategy": "UseIPv4"
+      },
+      "8.8.8.8",
+      "1.1.1.1",
+      "localhost"
+    ],
+    "queryStrategy": "UseIPv4"
+  },
+  "api": {
+    "tag": "api",
+    "services": ["HandlerService", "LoggerService", "StatsService"]
+  },
+  "stats": {},
+  "policy": {
+    "system": {
+      "statsInboundUplink": true,
+      "statsInboundDownlink": true,
+      "statsOutboundUplink": true,
+      "statsOutboundDownlink": true
+    }
+  }
+}

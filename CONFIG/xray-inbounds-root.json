@@ -1,0 +1,256 @@
+{
+  "inbounds_to_add": [
+    {
+      "_tier": "🔵 Starter — 1GB",
+      "_set_traffic_limit_in_xui": "1GB",
+      "tag": "vless-starter",
+      "listen": "127.0.0.1",
+      "port": 11001,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "7dd47c02-8dce-4b12-9dbc-7cdb95a9e10e",
+            "email": "starter@dreammaker",
+            "flow": ""
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "none",
+        "xhttpSettings": {
+          "path": "/api/v1/ping",
+          "host": "cdn.dreammaker-groupsoft.ir",
+          "mode": "auto",
+          "xPaddingBytes": "100-1000"
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      }
+    },
+    {
+      "_tier": "🟢 Basic — 2GB",
+      "_set_traffic_limit_in_xui": "2GB",
+      "tag": "vless-basic",
+      "listen": "127.0.0.1",
+      "port": 11002,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "92ebaa01-ec34-4601-a4dc-f6afdf822966",
+            "email": "basic@dreammaker",
+            "flow": ""
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "none",
+        "xhttpSettings": {
+          "path": "/cdn/init",
+          "host": "cdn.dreammaker-groupsoft.ir",
+          "mode": "auto",
+          "xPaddingBytes": "100-1000"
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      }
+    },
+    {
+      "_tier": "⚡ Standard — 5GB",
+      "_set_traffic_limit_in_xui": "5GB",
+      "tag": "vless-standard",
+      "listen": "127.0.0.1",
+      "port": 11003,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "3d5e3adf-0912-4c78-9ca9-b87db334ce71",
+            "email": "standard@dreammaker",
+            "flow": ""
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "none",
+        "xhttpSettings": {
+          "path": "/app/sync",
+          "host": "cdn.dreammaker-groupsoft.ir",
+          "mode": "auto",
+          "xPaddingBytes": "100-1000"
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      }
+    },
+    {
+      "_tier": "🚀 Plus — 10GB",
+      "_set_traffic_limit_in_xui": "10GB",
+      "tag": "vless-plus",
+      "listen": "127.0.0.1",
+      "port": 11004,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "e8eb3d74-8e8c-4903-b878-8feb656ebb0c",
+            "email": "plus@dreammaker",
+            "flow": ""
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "none",
+        "xhttpSettings": {
+          "path": "/api/v2/feed",
+          "host": "cdn.dreammaker-groupsoft.ir",
+          "mode": "auto",
+          "xPaddingBytes": "100-1000"
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      }
+    },
+    {
+      "_tier": "💫 Pro — 15GB",
+      "_set_traffic_limit_in_xui": "15GB",
+      "tag": "vless-pro",
+      "listen": "127.0.0.1",
+      "port": 11005,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "b3540a54-67dd-452a-b5d8-45d6407b8da5",
+            "email": "pro@dreammaker",
+            "flow": ""
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "none",
+        "xhttpSettings": {
+          "path": "/static/bundle.js",
+          "host": "cdn.dreammaker-groupsoft.ir",
+          "mode": "auto",
+          "xPaddingBytes": "100-1000"
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      }
+    },
+    {
+      "_tier": "🔥 Elite — 20GB",
+      "_set_traffic_limit_in_xui": "20GB",
+      "tag": "vless-elite",
+      "listen": "127.0.0.1",
+      "port": 11006,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "2680152c-0dc3-4fdb-b366-e936358b121f",
+            "email": "elite@dreammaker",
+            "flow": ""
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "none",
+        "xhttpSettings": {
+          "path": "/media/stream",
+          "host": "cdn.dreammaker-groupsoft.ir",
+          "mode": "auto",
+          "xPaddingBytes": "100-1000"
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      }
+    },
+    {
+      "_tier": "💎 Unlimited — Unlimited",
+      "_set_traffic_limit_in_xui": "Unlimited",
+      "tag": "vless-unlimited",
+      "listen": "127.0.0.1",
+      "port": 11007,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "89c0f294-3f94-4735-96cf-9c1aefdbcbb2",
+            "email": "unlimited@dreammaker",
+            "flow": ""
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "none",
+        "xhttpSettings": {
+          "path": "/v2/content/live",
+          "host": "cdn.dreammaker-groupsoft.ir",
+          "mode": "auto",
+          "xPaddingBytes": "100-1000"
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      }
+    }
+  ]
+}

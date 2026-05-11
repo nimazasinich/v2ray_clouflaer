@@ -1,0 +1,256 @@
+{
+  "log": {
+    "loglevel": "warning",
+    "access": "none",
+    "error": "",
+    "dnsLog": false,
+    "maskAddress": ""
+  },
+
+  "api": {
+    "tag": "api",
+    "services": ["HandlerService", "LoggerService", "StatsService"]
+  },
+
+  "dns": {
+    "queryStrategy": "UseIPv4",
+    "disableCache": false,
+    "disableFallback": false,
+    "servers": [
+      {
+        "address": "178.22.122.100",
+        "domains": [
+          "geosite:ir",
+          "domain:arvancloud.ir",
+          "domain:arvancloud.com",
+          "domain:derak.cloud",
+          "domain:iranserver.com",
+          "domain:parspack.com"
+        ],
+        "skipFallback": true,
+        "expectIPs": ["geoip:ir"]
+      },
+      {
+        "address": "10.202.10.202",
+        "domains": ["geosite:ir"],
+        "skipFallback": true,
+        "expectIPs": ["geoip:ir"]
+      },
+      {
+        "address": "https+local://1.1.1.1/dns-query",
+        "skipFallback": true
+      },
+      {
+        "address": "https+local://8.8.8.8/dns-query",
+        "skipFallback": false
+      },
+      "localhost"
+    ],
+    "tag": "dns_in"
+  },
+
+  "inbounds": [
+
+    {
+      "tag": "api",
+      "listen": "127.0.0.1",
+      "port": 62789,
+      "protocol": "tunnel",
+      "settings": {
+        "address": "127.0.0.1"
+      }
+    },
+
+    {
+      "tag": "vless-ws",
+      "listen": "127.0.0.1",
+      "port": 10001,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "294105e6-c268-4a0d-b7f1-8d86d75d9f51",
+            "email": "user@dreammaker",
+            "flow": ""
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "none",
+        "wsSettings": {
+          "path": "/68fbc8aa0e46ddb3",
+          "headers": {
+            "Host": "dreammaker-groupsoft.ir"
+          }
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls", "quic"],
+        "routeOnly": false
+      }
+    },
+
+    {
+      "tag": "vless-grpc",
+      "listen": "127.0.0.1",
+      "port": 10002,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "294105e6-c268-4a0d-b7f1-8d86d75d9f51",
+            "email": "user@dreammaker",
+            "flow": ""
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "grpc",
+        "security": "none",
+        "grpcSettings": {
+          "serviceName": "2812a98a0040abee",
+          "multiMode": false
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls"],
+        "routeOnly": false
+      }
+    }
+
+  ],
+
+  "outbounds": [
+    {
+      "tag": "direct",
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "UseIPv4",
+        "redirect": "",
+        "noises": []
+      },
+      "streamSettings": {
+        "sockopt": {
+          "tcpFastOpen": true,
+          "tcpNoDelay": true,
+          "tcpKeepAliveIdle": 120,
+          "tcpMptcp": false,
+          "mark": 255
+        }
+      }
+    },
+    {
+      "tag": "warp",
+      "protocol": "socks",
+      "settings": {
+        "servers": [
+          {
+            "address": "127.0.0.1",
+            "port": 40000
+          }
+        ]
+      },
+      "streamSettings": {
+        "sockopt": {
+          "tcpFastOpen": true,
+          "tcpNoDelay": true,
+          "tcpMptcp": false
+        }
+      }
+    },
+    {
+      "tag": "blocked",
+      "protocol": "blackhole",
+      "settings": {}
+    }
+  ],
+
+  "routing": {
+    "domainStrategy": "IPIfNonMatch",
+    "domainMatcher": "hybrid",
+    "rules": [
+      {
+        "type": "field",
+        "inboundTag": ["api"],
+        "outboundTag": "api"
+      },
+      {
+        "type": "field",
+        "ip": ["geoip:private"],
+        "outboundTag": "blocked"
+      },
+      {
+        "type": "field",
+        "protocol": ["bittorrent"],
+        "outboundTag": "blocked"
+      },
+      {
+        "type": "field",
+        "domain": ["geosite:category-ads-all"],
+        "outboundTag": "blocked"
+      },
+      {
+        "type": "field",
+        "domain": ["geosite:openai"],
+        "outboundTag": "warp"
+      },
+      {
+        "type": "field",
+        "domain": [
+          "geosite:ir",
+          "domain:arvancloud.ir",
+          "domain:arvancloud.com",
+          "domain:derak.cloud",
+          "domain:iranserver.com",
+          "domain:parspack.com",
+          "domain:eitaa.com",
+          "domain:rubika.ir",
+          "domain:bale.ai"
+        ],
+        "outboundTag": "blocked"
+      },
+      {
+        "type": "field",
+        "ip": ["geoip:ir"],
+        "outboundTag": "blocked"
+      },
+      {
+        "type": "field",
+        "network": "tcp,udp",
+        "outboundTag": "direct"
+      }
+    ]
+  },
+
+  "policy": {
+    "levels": {
+      "0": {
+        "handshake": 4,
+        "connIdle": 300,
+        "uplinkOnly": 2,
+        "downlinkOnly": 5,
+        "bufferSize": 256,
+        "statsUserUplink": true,
+        "statsUserDownlink": true
+      }
+    },
+    "system": {
+      "statsInboundUplink": true,
+      "statsInboundDownlink": true,
+      "statsOutboundUplink": false,
+      "statsOutboundDownlink": false
+    }
+  },
+
+  "stats": {},
+
+  "metrics": {
+    "tag": "metrics_out",
+    "listen": "127.0.0.1:11111"
+  }
+}

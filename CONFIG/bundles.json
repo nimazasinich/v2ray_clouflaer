@@ -1,0 +1,101 @@
+{
+  "1GB": {
+    "_setup": {
+      "uuid": "7dd47c02-8dce-4b12-9dbc-7cdb95a9e10e",
+      "data_limit": "1 GB",
+      "set_in_xui": "Inbounds → client UUID=7dd47c02-8dce-4b12-9dbc-7cdb95a9e10e → Traffic Limit=1GB",
+      "nginx_path": "/api/v1/ping",
+      "xray_port": "choose any free local port, e.g. 11001"
+    },
+    "uris": {
+      "port_80_plain": "vless://7dd47c02-8dce-4b12-9dbc-7cdb95a9e10e@82.115.26.105:80?type=xhttp&encryption=none&mode=auto&x_padding_bytes=100-1000&path=/api/v1/ping&host=cdn.dreammaker-groupsoft.ir&security=none#%F0%9F%94%B5%20DreamMaker%20%7C%201GB%20%7C%20CDN-80",
+      "port_443_tls": "vless://7dd47c02-8dce-4b12-9dbc-7cdb95a9e10e@82.115.26.105:443?type=xhttp&encryption=none&mode=auto&x_padding_bytes=100-1000&path=/api/v1/ping&host=cdn.dreammaker-groupsoft.ir&security=tls&fp=chrome&alpn=h2%2Chttp%2F1.1&sni=cdn.dreammaker-groupsoft.ir#%F0%9F%94%B5%20DreamMaker%20%7C%201GB%20%7C%20TLS-443"
+    },
+    "subscription_base64": "dmxlc3M6Ly83ZGQ0N2MwMi04ZGNlLTRiMTItOWRiYy03Y2RiOTVhOWUxMGVAODIuMTE1LjI2LjEwNTo4MD90eXBlPXhodHRwJmVuY3J5cHRpb249bm9uZSZtb2RlPWF1dG8meF9wYWRkaW5nX2J5dGVzPTEwMC0xMDAwJnBhdGg9L2FwaS92MS9waW5nJmhvc3Q9Y2RuLmRyZWFtbWFrZXItZ3JvdXBzb2Z0LmlyJnNlY3VyaXR5PW5vbmUjJUYwJTlGJTk0JUI1JTIwRHJlYW1NYWtlciUyMCU3QyUyMDFHQiUyMCU3QyUyMENETi04MAp2bGVzczovLzdkZDQ3YzAyLThkY2UtNGIxMi05ZGJjLTdjZGI5NWE5ZTEwZUA4Mi4xMTUuMjYuMTA1OjQ0Mz90eXBlPXhodHRwJmVuY3J5cHRpb249bm9uZSZtb2RlPWF1dG8meF9wYWRkaW5nX2J5dGVzPTEwMC0xMDAwJnBhdGg9L2FwaS92MS9waW5nJmhvc3Q9Y2RuLmRyZWFtbWFrZXItZ3JvdXBzb2Z0LmlyJnNlY3VyaXR5PXRscyZmcD1jaHJvbWUmYWxwbj1oMiUyQ2h0dHAlMkYxLjEmc25pPWNkbi5kcmVhbW1ha2VyLWdyb3Vwc29mdC5pciMlRjAlOUYlOTQlQjUlMjBEcmVhbU1ha2VyJTIwJTdDJTIwMUdCJTIwJTdDJTIwVExTLTQ0Mw=="
+  },
+  "2GB": {
+    "_setup": {
+      "uuid": "92ebaa01-ec34-4601-a4dc-f6afdf822966",
+      "data_limit": "2 GB",
+      "set_in_xui": "Inbounds → client UUID=92ebaa01-ec34-4601-a4dc-f6afdf822966 → Traffic Limit=2GB",
+      "nginx_path": "/cdn/init",
+      "xray_port": "choose any free local port, e.g. 12001"
+    },
+    "uris": {
+      "port_80_plain": "vless://92ebaa01-ec34-4601-a4dc-f6afdf822966@82.115.26.105:80?type=xhttp&encryption=none&mode=auto&x_padding_bytes=100-1000&path=/cdn/init&host=cdn.dreammaker-groupsoft.ir&security=none#%F0%9F%9F%A2%20DreamMaker%20%7C%202GB%20%7C%20CDN-80",
+      "port_443_tls": "vless://92ebaa01-ec34-4601-a4dc-f6afdf822966@82.115.26.105:443?type=xhttp&encryption=none&mode=auto&x_padding_bytes=100-1000&path=/cdn/init&host=cdn.dreammaker-groupsoft.ir&security=tls&fp=chrome&alpn=h2%2Chttp%2F1.1&sni=cdn.dreammaker-groupsoft.ir#%F0%9F%9F%A2%20DreamMaker%20%7C%202GB%20%7C%20TLS-443"
+    },
+    "subscription_base64": "dmxlc3M6Ly85MmViYWEwMS1lYzM0LTQ2MDEtYTRkYy1mNmFmZGY4MjI5NjZAODIuMTE1LjI2LjEwNTo4MD90eXBlPXhodHRwJmVuY3J5cHRpb249bm9uZSZtb2RlPWF1dG8meF9wYWRkaW5nX2J5dGVzPTEwMC0xMDAwJnBhdGg9L2Nkbi9pbml0Jmhvc3Q9Y2RuLmRyZWFtbWFrZXItZ3JvdXBzb2Z0LmlyJnNlY3VyaXR5PW5vbmUjJUYwJTlGJTlGJUEyJTIwRHJlYW1NYWtlciUyMCU3QyUyMDJHQiUyMCU3QyUyMENETi04MAp2bGVzczovLzkyZWJhYTAxLWVjMzQtNDYwMS1hNGRjLWY2YWZkZjgyMjk2NkA4Mi4xMTUuMjYuMTA1OjQ0Mz90eXBlPXhodHRwJmVuY3J5cHRpb249bm9uZSZtb2RlPWF1dG8meF9wYWRkaW5nX2J5dGVzPTEwMC0xMDAwJnBhdGg9L2Nkbi9pbml0Jmhvc3Q9Y2RuLmRyZWFtbWFrZXItZ3JvdXBzb2Z0LmlyJnNlY3VyaXR5PXRscyZmcD1jaHJvbWUmYWxwbj1oMiUyQ2h0dHAlMkYxLjEmc25pPWNkbi5kcmVhbW1ha2VyLWdyb3Vwc29mdC5pciMlRjAlOUYlOUYlQTIlMjBEcmVhbU1ha2VyJTIwJTdDJTIwMkdCJTIwJTdDJTIwVExTLTQ0Mw=="
+  },
+  "5GB": {
+    "_setup": {
+      "uuid": "3d5e3adf-0912-4c78-9ca9-b87db334ce71",
+      "data_limit": "5 GB",
+      "set_in_xui": "Inbounds → client UUID=3d5e3adf-0912-4c78-9ca9-b87db334ce71 → Traffic Limit=5GB",
+      "nginx_path": "/app/sync",
+      "xray_port": "choose any free local port, e.g. 13001"
+    },
+    "uris": {
+      "port_80_plain": "vless://3d5e3adf-0912-4c78-9ca9-b87db334ce71@82.115.26.105:80?type=xhttp&encryption=none&mode=auto&x_padding_bytes=100-1000&path=/app/sync&host=cdn.dreammaker-groupsoft.ir&security=none#%E2%9A%A1%20DreamMaker%20%7C%205GB%20%7C%20CDN-80",
+      "port_443_tls": "vless://3d5e3adf-0912-4c78-9ca9-b87db334ce71@82.115.26.105:443?type=xhttp&encryption=none&mode=auto&x_padding_bytes=100-1000&path=/app/sync&host=cdn.dreammaker-groupsoft.ir&security=tls&fp=chrome&alpn=h2%2Chttp%2F1.1&sni=cdn.dreammaker-groupsoft.ir#%E2%9A%A1%20DreamMaker%20%7C%205GB%20%7C%20TLS-443"
+    },
+    "subscription_base64": "dmxlc3M6Ly8zZDVlM2FkZi0wOTEyLTRjNzgtOWNhOS1iODdkYjMzNGNlNzFAODIuMTE1LjI2LjEwNTo4MD90eXBlPXhodHRwJmVuY3J5cHRpb249bm9uZSZtb2RlPWF1dG8meF9wYWRkaW5nX2J5dGVzPTEwMC0xMDAwJnBhdGg9L2FwcC9zeW5jJmhvc3Q9Y2RuLmRyZWFtbWFrZXItZ3JvdXBzb2Z0LmlyJnNlY3VyaXR5PW5vbmUjJUUyJTlBJUExJTIwRHJlYW1NYWtlciUyMCU3QyUyMDVHQiUyMCU3QyUyMENETi04MAp2bGVzczovLzNkNWUzYWRmLTA5MTItNGM3OC05Y2E5LWI4N2RiMzM0Y2U3MUA4Mi4xMTUuMjYuMTA1OjQ0Mz90eXBlPXhodHRwJmVuY3J5cHRpb249bm9uZSZtb2RlPWF1dG8meF9wYWRkaW5nX2J5dGVzPTEwMC0xMDAwJnBhdGg9L2FwcC9zeW5jJmhvc3Q9Y2RuLmRyZWFtbWFrZXItZ3JvdXBzb2Z0LmlyJnNlY3VyaXR5PXRscyZmcD1jaHJvbWUmYWxwbj1oMiUyQ2h0dHAlMkYxLjEmc25pPWNkbi5kcmVhbW1ha2VyLWdyb3Vwc29mdC5pciMlRTIlOUElQTElMjBEcmVhbU1ha2VyJTIwJTdDJTIwNUdCJTIwJTdDJTIwVExTLTQ0Mw=="
+  },
+  "10GB": {
+    "_setup": {
+      "uuid": "e8eb3d74-8e8c-4903-b878-8feb656ebb0c",
+      "data_limit": "10 GB",
+      "set_in_xui": "Inbounds → client UUID=e8eb3d74-8e8c-4903-b878-8feb656ebb0c → Traffic Limit=10GB",
+      "nginx_path": "/api/v2/feed",
+      "xray_port": "choose any free local port, e.g. 14001"
+    },
+    "uris": {
+      "port_80_plain": "vless://e8eb3d74-8e8c-4903-b878-8feb656ebb0c@82.115.26.105:80?type=xhttp&encryption=none&mode=auto&x_padding_bytes=100-1000&path=/api/v2/feed&host=cdn.dreammaker-groupsoft.ir&security=none#%F0%9F%9A%80%20DreamMaker%20%7C%2010GB%20%7C%20CDN-80",
+      "port_443_tls": "vless://e8eb3d74-8e8c-4903-b878-8feb656ebb0c@82.115.26.105:443?type=xhttp&encryption=none&mode=auto&x_padding_bytes=100-1000&path=/api/v2/feed&host=cdn.dreammaker-groupsoft.ir&security=tls&fp=chrome&alpn=h2%2Chttp%2F1.1&sni=cdn.dreammaker-groupsoft.ir#%F0%9F%9A%80%20DreamMaker%20%7C%2010GB%20%7C%20TLS-443"
+    },
+    "subscription_base64": "dmxlc3M6Ly9lOGViM2Q3NC04ZThjLTQ5MDMtYjg3OC04ZmViNjU2ZWJiMGNAODIuMTE1LjI2LjEwNTo4MD90eXBlPXhodHRwJmVuY3J5cHRpb249bm9uZSZtb2RlPWF1dG8meF9wYWRkaW5nX2J5dGVzPTEwMC0xMDAwJnBhdGg9L2FwaS92Mi9mZWVkJmhvc3Q9Y2RuLmRyZWFtbWFrZXItZ3JvdXBzb2Z0LmlyJnNlY3VyaXR5PW5vbmUjJUYwJTlGJTlBJTgwJTIwRHJlYW1NYWtlciUyMCU3QyUyMDEwR0IlMjAlN0MlMjBDRE4tODAKdmxlc3M6Ly9lOGViM2Q3NC04ZThjLTQ5MDMtYjg3OC04ZmViNjU2ZWJiMGNAODIuMTE1LjI2LjEwNTo0NDM/dHlwZT14aHR0cCZlbmNyeXB0aW9uPW5vbmUmbW9kZT1hdXRvJnhfcGFkZGluZ19ieXRlcz0xMDAtMTAwMCZwYXRoPS9hcGkvdjIvZmVlZCZob3N0PWNkbi5kcmVhbW1ha2VyLWdyb3Vwc29mdC5pciZzZWN1cml0eT10bHMmZnA9Y2hyb21lJmFscG49aDIlMkNodHRwJTJGMS4xJnNuaT1jZG4uZHJlYW1tYWtlci1ncm91cHNvZnQuaXIjJUYwJTlGJTlBJTgwJTIwRHJlYW1NYWtlciUyMCU3QyUyMDEwR0IlMjAlN0MlMjBUTFMtNDQz"
+  },
+  "15GB": {
+    "_setup": {
+      "uuid": "b3540a54-67dd-452a-b5d8-45d6407b8da5",
+      "data_limit": "15 GB",
+      "set_in_xui": "Inbounds → client UUID=b3540a54-67dd-452a-b5d8-45d6407b8da5 → Traffic Limit=15GB",
+      "nginx_path": "/static/bundle.js",
+      "xray_port": "choose any free local port, e.g. 15001"
+    },
+    "uris": {
+      "port_80_plain": "vless://b3540a54-67dd-452a-b5d8-45d6407b8da5@82.115.26.105:80?type=xhttp&encryption=none&mode=auto&x_padding_bytes=100-1000&path=/static/bundle.js&host=cdn.dreammaker-groupsoft.ir&security=none#%F0%9F%92%AB%20DreamMaker%20%7C%2015GB%20%7C%20CDN-80",
+      "port_443_tls": "vless://b3540a54-67dd-452a-b5d8-45d6407b8da5@82.115.26.105:443?type=xhttp&encryption=none&mode=auto&x_padding_bytes=100-1000&path=/static/bundle.js&host=cdn.dreammaker-groupsoft.ir&security=tls&fp=chrome&alpn=h2%2Chttp%2F1.1&sni=cdn.dreammaker-groupsoft.ir#%F0%9F%92%AB%20DreamMaker%20%7C%2015GB%20%7C%20TLS-443"
+    },
+    "subscription_base64": "dmxlc3M6Ly9iMzU0MGE1NC02N2RkLTQ1MmEtYjVkOC00NWQ2NDA3YjhkYTVAODIuMTE1LjI2LjEwNTo4MD90eXBlPXhodHRwJmVuY3J5cHRpb249bm9uZSZtb2RlPWF1dG8meF9wYWRkaW5nX2J5dGVzPTEwMC0xMDAwJnBhdGg9L3N0YXRpYy9idW5kbGUuanMmaG9zdD1jZG4uZHJlYW1tYWtlci1ncm91cHNvZnQuaXImc2VjdXJpdHk9bm9uZSMlRjAlOUYlOTIlQUIlMjBEcmVhbU1ha2VyJTIwJTdDJTIwMTVHQiUyMCU3QyUyMENETi04MAp2bGVzczovL2IzNTQwYTU0LTY3ZGQtNDUyYS1iNWQ4LTQ1ZDY0MDdiOGRhNUA4Mi4xMTUuMjYuMTA1OjQ0Mz90eXBlPXhodHRwJmVuY3J5cHRpb249bm9uZSZtb2RlPWF1dG8meF9wYWRkaW5nX2J5dGVzPTEwMC0xMDAwJnBhdGg9L3N0YXRpYy9idW5kbGUuanMmaG9zdD1jZG4uZHJlYW1tYWtlci1ncm91cHNvZnQuaXImc2VjdXJpdHk9dGxzJmZwPWNocm9tZSZhbHBuPWgyJTJDaHR0cCUyRjEuMSZzbmk9Y2RuLmRyZWFtbWFrZXItZ3JvdXBzb2Z0LmlyIyVGMCU5RiU5MiVBQiUyMERyZWFtTWFrZXIlMjAlN0MlMjAxNUdCJTIwJTdDJTIwVExTLTQ0Mw=="
+  },
+  "20GB": {
+    "_setup": {
+      "uuid": "2680152c-0dc3-4fdb-b366-e936358b121f",
+      "data_limit": "20 GB",
+      "set_in_xui": "Inbounds → client UUID=2680152c-0dc3-4fdb-b366-e936358b121f → Traffic Limit=20GB",
+      "nginx_path": "/media/stream",
+      "xray_port": "choose any free local port, e.g. 16001"
+    },
+    "uris": {
+      "port_80_plain": "vless://2680152c-0dc3-4fdb-b366-e936358b121f@82.115.26.105:80?type=xhttp&encryption=none&mode=auto&x_padding_bytes=100-1000&path=/media/stream&host=cdn.dreammaker-groupsoft.ir&security=none#%F0%9F%94%A5%20DreamMaker%20%7C%2020GB%20%7C%20CDN-80",
+      "port_443_tls": "vless://2680152c-0dc3-4fdb-b366-e936358b121f@82.115.26.105:443?type=xhttp&encryption=none&mode=auto&x_padding_bytes=100-1000&path=/media/stream&host=cdn.dreammaker-groupsoft.ir&security=tls&fp=chrome&alpn=h2%2Chttp%2F1.1&sni=cdn.dreammaker-groupsoft.ir#%F0%9F%94%A5%20DreamMaker%20%7C%2020GB%20%7C%20TLS-443"
+    },
+    "subscription_base64": "dmxlc3M6Ly8yNjgwMTUyYy0wZGMzLTRmZGItYjM2Ni1lOTM2MzU4YjEyMWZAODIuMTE1LjI2LjEwNTo4MD90eXBlPXhodHRwJmVuY3J5cHRpb249bm9uZSZtb2RlPWF1dG8meF9wYWRkaW5nX2J5dGVzPTEwMC0xMDAwJnBhdGg9L21lZGlhL3N0cmVhbSZob3N0PWNkbi5kcmVhbW1ha2VyLWdyb3Vwc29mdC5pciZzZWN1cml0eT1ub25lIyVGMCU5RiU5NCVBNSUyMERyZWFtTWFrZXIlMjAlN0MlMjAyMEdCJTIwJTdDJTIwQ0ROLTgwCnZsZXNzOi8vMjY4MDE1MmMtMGRjMy00ZmRiLWIzNjYtZTkzNjM1OGIxMjFmQDgyLjExNS4yNi4xMDU6NDQzP3R5cGU9eGh0dHAmZW5jcnlwdGlvbj1ub25lJm1vZGU9YXV0byZ4X3BhZGRpbmdfYnl0ZXM9MTAwLTEwMDAmcGF0aD0vbWVkaWEvc3RyZWFtJmhvc3Q9Y2RuLmRyZWFtbWFrZXItZ3JvdXBzb2Z0LmlyJnNlY3VyaXR5PXRscyZmcD1jaHJvbWUmYWxwbj1oMiUyQ2h0dHAlMkYxLjEmc25pPWNkbi5kcmVhbW1ha2VyLWdyb3Vwc29mdC5pciMlRjAlOUYlOTQlQTUlMjBEcmVhbU1ha2VyJTIwJTdDJTIwMjBHQiUyMCU3QyUyMFRMUy00NDM="
+  },
+  "Unlimited": {
+    "_setup": {
+      "uuid": "89c0f294-3f94-4735-96cf-9c1aefdbcbb2",
+      "data_limit": "Unlimited",
+      "set_in_xui": "No limit",
+      "nginx_path": "/v2/content/live",
+      "xray_port": "choose any free local port, e.g. 17001"
+    },
+    "uris": {
+      "port_80_plain": "vless://89c0f294-3f94-4735-96cf-9c1aefdbcbb2@82.115.26.105:80?type=xhttp&encryption=none&mode=auto&x_padding_bytes=100-1000&path=/v2/content/live&host=cdn.dreammaker-groupsoft.ir&security=none#%F0%9F%92%8E%20DreamMaker%20%7C%20%E2%88%9E%20%7C%20CDN-80",
+      "port_443_tls": "vless://89c0f294-3f94-4735-96cf-9c1aefdbcbb2@82.115.26.105:443?type=xhttp&encryption=none&mode=auto&x_padding_bytes=100-1000&path=/v2/content/live&host=cdn.dreammaker-groupsoft.ir&security=tls&fp=chrome&alpn=h2%2Chttp%2F1.1&sni=cdn.dreammaker-groupsoft.ir#%F0%9F%92%8E%20DreamMaker%20%7C%20%E2%88%9E%20%7C%20TLS-443"
+    },
+    "subscription_base64": "dmxlc3M6Ly84OWMwZjI5NC0zZjk0LTQ3MzUtOTZjZi05YzFhZWZkYmNiYjJAODIuMTE1LjI2LjEwNTo4MD90eXBlPXhodHRwJmVuY3J5cHRpb249bm9uZSZtb2RlPWF1dG8meF9wYWRkaW5nX2J5dGVzPTEwMC0xMDAwJnBhdGg9L3YyL2NvbnRlbnQvbGl2ZSZob3N0PWNkbi5kcmVhbW1ha2VyLWdyb3Vwc29mdC5pciZzZWN1cml0eT1ub25lIyVGMCU5RiU5MiU4RSUyMERyZWFtTWFrZXIlMjAlN0MlMjAlRTIlODglOUUlMjAlN0MlMjBDRE4tODAKdmxlc3M6Ly84OWMwZjI5NC0zZjk0LTQ3MzUtOTZjZi05YzFhZWZkYmNiYjJAODIuMTE1LjI2LjEwNTo0NDM/dHlwZT14aHR0cCZlbmNyeXB0aW9uPW5vbmUmbW9kZT1hdXRvJnhfcGFkZGluZ19ieXRlcz0xMDAtMTAwMCZwYXRoPS92Mi9jb250ZW50L2xpdmUmaG9zdD1jZG4uZHJlYW1tYWtlci1ncm91cHNvZnQuaXImc2VjdXJpdHk9dGxzJmZwPWNocm9tZSZhbHBuPWgyJTJDaHR0cCUyRjEuMSZzbmk9Y2RuLmRyZWFtbWFrZXItZ3JvdXBzb2Z0LmlyIyVGMCU5RiU5MiU4RSUyMERyZWFtTWFrZXIlMjAlN0MlMjAlRTIlODglOUUlMjAlN0MlMjBUTFMtNDQz"
+  },
+  "_master_subscription_base64": "dmxlc3M6Ly83ZGQ0N2MwMi04ZGNlLTRiMTItOWRiYy03Y2RiOTVhOWUxMGVAODIuMTE1LjI2LjEwNTo4MD90eXBlPXhodHRwJmVuY3J5cHRpb249bm9uZSZtb2RlPWF1dG8meF9wYWRkaW5nX2J5dGVzPTEwMC0xMDAwJnBhdGg9L2FwaS92MS9waW5nJmhvc3Q9Y2RuLmRyZWFtbWFrZXItZ3JvdXBzb2Z0LmlyJnNlY3VyaXR5PW5vbmUjJUYwJTlGJTk0JUI1JTIwRHJlYW1NYWtlciUyMCU3QyUyMDFHQiUyMCU3QyUyMENETi04MAp2bGVzczovLzdkZDQ3YzAyLThkY2UtNGIxMi05ZGJjLTdjZGI5NWE5ZTEwZUA4Mi4xMTUuMjYuMTA1OjQ0Mz90eXBlPXhodHRwJmVuY3J5cHRpb249bm9uZSZtb2RlPWF1dG8meF9wYWRkaW5nX2J5dGVzPTEwMC0xMDAwJnBhdGg9L2FwaS92MS9waW5nJmhvc3Q9Y2RuLmRyZWFtbWFrZXItZ3JvdXBzb2Z0LmlyJnNlY3VyaXR5PXRscyZmcD1jaHJvbWUmYWxwbj1oMiUyQ2h0dHAlMkYxLjEmc25pPWNkbi5kcmVhbW1ha2VyLWdyb3Vwc29mdC5pciMlRjAlOUYlOTQlQjUlMjBEcmVhbU1ha2VyJTIwJTdDJTIwMUdCJTIwJTdDJTIwVExTLTQ0Mwp2bGVzczovLzkyZWJhYTAxLWVjMzQtNDYwMS1hNGRjLWY2YWZkZjgyMjk2NkA4Mi4xMTUuMjYuMTA1OjgwP3R5cGU9eGh0dHAmZW5jcnlwdGlvbj1ub25lJm1vZGU9YXV0byZ4X3BhZGRpbmdfYnl0ZXM9MTAwLTEwMDAmcGF0aD0vY2RuL2luaXQmaG9zdD1jZG4uZHJlYW1tYWtlci1ncm91cHNvZnQuaXImc2VjdXJpdHk9bm9uZSMlRjAlOUYlOUYlQTIlMjBEcmVhbU1ha2VyJTIwJTdDJTIwMkdCJTIwJTdDJTIwQ0ROLTgwCnZsZXNzOi8vOTJlYmFhMDEtZWMzNC00NjAxLWE0ZGMtZjZhZmRmODIyOTY2QDgyLjExNS4yNi4xMDU6NDQzP3R5cGU9eGh0dHAmZW5jcnlwdGlvbj1ub25lJm1vZGU9YXV0byZ4X3BhZGRpbmdfYnl0ZXM9MTAwLTEwMDAmcGF0aD0vY2RuL2luaXQmaG9zdD1jZG4uZHJlYW1tYWtlci1ncm91cHNvZnQuaXImc2VjdXJpdHk9dGxzJmZwPWNocm9tZSZhbHBuPWgyJTJDaHR0cCUyRjEuMSZzbmk9Y2RuLmRyZWFtbWFrZXItZ3JvdXBzb2Z0LmlyIyVGMCU5RiU5RiVBMiUyMERyZWFtTWFrZXIlMjAlN0MlMjAyR0IlMjAlN0MlMjBUTFMtNDQzCnZsZXNzOi8vM2Q1ZTNhZGYtMDkxMi00Yzc4LTljYTktYjg3ZGIzMzRjZTcxQDgyLjExNS4yNi4xMDU6ODA/dHlwZT14aHR0cCZlbmNyeXB0aW9uPW5vbmUmbW9kZT1hdXRvJnhfcGFkZGluZ19ieXRlcz0xMDAtMTAwMCZwYXRoPS9hcHAvc3luYyZob3N0PWNkbi5kcmVhbW1ha2VyLWdyb3Vwc29mdC5pciZzZWN1cml0eT1ub25lIyVFMiU5QSVBMSUyMERyZWFtTWFrZXIlMjAlN0MlMjA1R0IlMjAlN0MlMjBDRE4tODAKdmxlc3M6Ly8zZDVlM2FkZi0wOTEyLTRjNzgtOWNhOS1iODdkYjMzNGNlNzFAODIuMTE1LjI2LjEwNTo0NDM/dHlwZT14aHR0cCZlbmNyeXB0aW9uPW5vbmUmbW9kZT1hdXRvJnhfcGFkZGluZ19ieXRlcz0xMDAtMTAwMCZwYXRoPS9hcHAvc3luYyZob3N0PWNkbi5kcmVhbW1ha2VyLWdyb3Vwc29mdC5pciZzZWN1cml0eT10bHMmZnA9Y2hyb21lJmFscG49aDIlMkNodHRwJTJGMS4xJnNuaT1jZG4uZHJlYW1tYWtlci1ncm91cHNvZnQuaXIjJUUyJTlBJUExJTIwRHJlYW1NYWtlciUyMCU3QyUyMDVHQiUyMCU3QyUyMFRMUy00NDMKdmxlc3M6Ly9lOGViM2Q3NC04ZThjLTQ5MDMtYjg3OC04ZmViNjU2ZWJiMGNAODIuMTE1LjI2LjEwNTo4MD90eXBlPXhodHRwJmVuY3J5cHRpb249bm9uZSZtb2RlPWF1dG8meF9wYWRkaW5nX2J5dGVzPTEwMC0xMDAwJnBhdGg9L2FwaS92Mi9mZWVkJmhvc3Q9Y2RuLmRyZWFtbWFrZXItZ3JvdXBzb2Z0LmlyJnNlY3VyaXR5PW5vbmUjJUYwJTlGJTlBJTgwJTIwRHJlYW1NYWtlciUyMCU3QyUyMDEwR0IlMjAlN0MlMjBDRE4tODAKdmxlc3M6Ly9lOGViM2Q3NC04ZThjLTQ5MDMtYjg3OC04ZmViNjU2ZWJiMGNAODIuMTE1LjI2LjEwNTo0NDM/dHlwZT14aHR0cCZlbmNyeXB0aW9uPW5vbmUmbW9kZT1hdXRvJnhfcGFkZGluZ19ieXRlcz0xMDAtMTAwMCZwYXRoPS9hcGkvdjIvZmVlZCZob3N0PWNkbi5kcmVhbW1ha2VyLWdyb3Vwc29mdC5pciZzZWN1cml0eT10bHMmZnA9Y2hyb21lJmFscG49aDIlMkNodHRwJTJGMS4xJnNuaT1jZG4uZHJlYW1tYWtlci1ncm91cHNvZnQuaXIjJUYwJTlGJTlBJTgwJTIwRHJlYW1NYWtlciUyMCU3QyUyMDEwR0IlMjAlN0MlMjBUTFMtNDQzCnZsZXNzOi8vYjM1NDBhNTQtNjdkZC00NTJhLWI1ZDgtNDVkNjQwN2I4ZGE1QDgyLjExNS4yNi4xMDU6ODA/dHlwZT14aHR0cCZlbmNyeXB0aW9uPW5vbmUmbW9kZT1hdXRvJnhfcGFkZGluZ19ieXRlcz0xMDAtMTAwMCZwYXRoPS9zdGF0aWMvYnVuZGxlLmpzJmhvc3Q9Y2RuLmRyZWFtbWFrZXItZ3JvdXBzb2Z0LmlyJnNlY3VyaXR5PW5vbmUjJUYwJTlGJTkyJUFCJTIwRHJlYW1NYWtlciUyMCU3QyUyMDE1R0IlMjAlN0MlMjBDRE4tODAKdmxlc3M6Ly9iMzU0MGE1NC02N2RkLTQ1MmEtYjVkOC00NWQ2NDA3YjhkYTVAODIuMTE1LjI2LjEwNTo0NDM/dHlwZT14aHR0cCZlbmNyeXB0aW9uPW5vbmUmbW9kZT1hdXRvJnhfcGFkZGluZ19ieXRlcz0xMDAtMTAwMCZwYXRoPS9zdGF0aWMvYnVuZGxlLmpzJmhvc3Q9Y2RuLmRyZWFtbWFrZXItZ3JvdXBzb2Z0LmlyJnNlY3VyaXR5PXRscyZmcD1jaHJvbWUmYWxwbj1oMiUyQ2h0dHAlMkYxLjEmc25pPWNkbi5kcmVhbW1ha2VyLWdyb3Vwc29mdC5pciMlRjAlOUYlOTIlQUIlMjBEcmVhbU1ha2VyJTIwJTdDJTIwMTVHQiUyMCU3QyUyMFRMUy00NDMKdmxlc3M6Ly8yNjgwMTUyYy0wZGMzLTRmZGItYjM2Ni1lOTM2MzU4YjEyMWZAODIuMTE1LjI2LjEwNTo4MD90eXBlPXhodHRwJmVuY3J5cHRpb249bm9uZSZtb2RlPWF1dG8meF9wYWRkaW5nX2J5dGVzPTEwMC0xMDAwJnBhdGg9L21lZGlhL3N0cmVhbSZob3N0PWNkbi5kcmVhbW1ha2VyLWdyb3Vwc29mdC5pciZzZWN1cml0eT1ub25lIyVGMCU5RiU5NCVBNSUyMERyZWFtTWFrZXIlMjAlN0MlMjAyMEdCJTIwJTdDJTIwQ0ROLTgwCnZsZXNzOi8vMjY4MDE1MmMtMGRjMy00ZmRiLWIzNjYtZTkzNjM1OGIxMjFmQDgyLjExNS4yNi4xMDU6NDQzP3R5cGU9eGh0dHAmZW5jcnlwdGlvbj1ub25lJm1vZGU9YXV0byZ4X3BhZGRpbmdfYnl0ZXM9MTAwLTEwMDAmcGF0aD0vbWVkaWEvc3RyZWFtJmhvc3Q9Y2RuLmRyZWFtbWFrZXItZ3JvdXBzb2Z0LmlyJnNlY3VyaXR5PXRscyZmcD1jaHJvbWUmYWxwbj1oMiUyQ2h0dHAlMkYxLjEmc25pPWNkbi5kcmVhbW1ha2VyLWdyb3Vwc29mdC5pciMlRjAlOUYlOTQlQTUlMjBEcmVhbU1ha2VyJTIwJTdDJTIwMjBHQiUyMCU3QyUyMFRMUy00NDMKdmxlc3M6Ly84OWMwZjI5NC0zZjk0LTQ3MzUtOTZjZi05YzFhZWZkYmNiYjJAODIuMTE1LjI2LjEwNTo4MD90eXBlPXhodHRwJmVuY3J5cHRpb249bm9uZSZtb2RlPWF1dG8meF9wYWRkaW5nX2J5dGVzPTEwMC0xMDAwJnBhdGg9L3YyL2NvbnRlbnQvbGl2ZSZob3N0PWNkbi5kcmVhbW1ha2VyLWdyb3Vwc29mdC5pciZzZWN1cml0eT1ub25lIyVGMCU5RiU5MiU4RSUyMERyZWFtTWFrZXIlMjAlN0MlMjAlRTIlODglOUUlMjAlN0MlMjBDRE4tODAKdmxlc3M6Ly84OWMwZjI5NC0zZjk0LTQ3MzUtOTZjZi05YzFhZWZkYmNiYjJAODIuMTE1LjI2LjEwNTo0NDM/dHlwZT14aHR0cCZlbmNyeXB0aW9uPW5vbmUmbW9kZT1hdXRvJnhfcGFkZGluZ19ieXRlcz0xMDAtMTAwMCZwYXRoPS92Mi9jb250ZW50L2xpdmUmaG9zdD1jZG4uZHJlYW1tYWtlci1ncm91cHNvZnQuaXImc2VjdXJpdHk9dGxzJmZwPWNocm9tZSZhbHBuPWgyJTJDaHR0cCUyRjEuMSZzbmk9Y2RuLmRyZWFtbWFrZXItZ3JvdXBzb2Z0LmlyIyVGMCU5RiU5MiU4RSUyMERyZWFtTWFrZXIlMjAlN0MlMjAlRTIlODglOUUlMjAlN0MlMjBUTFMtNDQz"
+}

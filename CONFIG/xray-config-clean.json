@@ -1,0 +1,410 @@
+{
+  "log": {
+    "access": "none",
+    "error": "/var/log/xray/error.log",
+    "loglevel": "warning",
+    "dnsLog": false,
+    "maskAddress": ""
+  },
+  "api": {
+    "tag": "api",
+    "services": [
+      "HandlerService",
+      "LoggerService",
+      "StatsService"
+    ]
+  },
+  "stats": {},
+  "policy": {
+    "levels": {
+      "0": {
+        "handshake": 4,
+        "connIdle": 300,
+        "uplinkOnly": 2,
+        "downlinkOnly": 5,
+        "bufferSize": 256,
+        "statsUserUplink": true,
+        "statsUserDownlink": true
+      }
+    },
+    "system": {
+      "statsInboundUplink": true,
+      "statsInboundDownlink": true,
+      "statsOutboundUplink": false,
+      "statsOutboundDownlink": false
+    }
+  },
+  "dns": {
+    "queryStrategy": "UseIPv4",
+    "disableCache": false,
+    "disableFallback": false,
+    "servers": [
+      {
+        "address": "https+local://1.1.1.1/dns-query",
+        "skipFallback": true
+      },
+      {
+        "address": "https+local://8.8.8.8/dns-query",
+        "skipFallback": false
+      },
+      "localhost"
+    ],
+    "tag": "dns_in"
+  },
+  "routing": {
+    "domainStrategy": "IPIfNonMatch",
+    "domainMatcher": "hybrid",
+    "rules": [
+      {
+        "type": "field",
+        "inboundTag": [
+          "api"
+        ],
+        "outboundTag": "api"
+      },
+      {
+        "type": "field",
+        "ip": [
+          "geoip:private"
+        ],
+        "outboundTag": "blocked"
+      },
+      {
+        "type": "field",
+        "protocol": [
+          "bittorrent"
+        ],
+        "outboundTag": "blocked"
+      },
+      {
+        "type": "field",
+        "domain": [
+          "geosite:category-ads-all"
+        ],
+        "outboundTag": "blocked"
+      },
+      {
+        "type": "field",
+        "domain": [
+          "geosite:openai"
+        ],
+        "outboundTag": "warp"
+      }
+    ]
+  },
+  "inbounds": [
+    {
+      "tag": "api",
+      "listen": "127.0.0.1",
+      "port": 62789,
+      "protocol": "dokodemo-door",
+      "settings": {
+        "address": "127.0.0.1"
+      },
+      "sniffing": null
+    },
+    {
+      "tag": "metrics-in",
+      "listen": "127.0.0.1",
+      "port": 11111,
+      "protocol": "dokodemo-door",
+      "settings": {
+        "address": "127.0.0.1"
+      },
+      "sniffing": null
+    },
+    {
+      "tag": "vless-starter",
+      "listen": "127.0.0.1",
+      "port": 11001,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "7dd47c02-8dce-4b12-9dbc-7cdb95a9e10e",
+            "email": "🔵 DreamMaker  |  STARTER  ·  1 GB",
+            "flow": ""
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "none",
+        "xhttpSettings": {
+          "path": "/api/v1/ping",
+          "host": "cdn.dreammaker-groupsoft.ir",
+          "mode": "auto",
+          "xPaddingBytes": "100-1000",
+          "headers": {}
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      }
+    },
+    {
+      "tag": "vless-basic",
+      "listen": "127.0.0.1",
+      "port": 11002,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "92ebaa01-ec34-4601-a4dc-f6afdf822966",
+            "email": "🟢 DreamMaker  |  BASIC  ·  2 GB",
+            "flow": ""
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "none",
+        "xhttpSettings": {
+          "path": "/cdn/init",
+          "host": "cdn.dreammaker-groupsoft.ir",
+          "mode": "auto",
+          "xPaddingBytes": "100-1000",
+          "headers": {}
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      }
+    },
+    {
+      "tag": "vless-standard",
+      "listen": "127.0.0.1",
+      "port": 11003,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "3d5e3adf-0912-4c78-9ca9-b87db334ce71",
+            "email": "⚡ DreamMaker  |  STANDARD  ·  5 GB",
+            "flow": ""
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "none",
+        "xhttpSettings": {
+          "path": "/app/sync",
+          "host": "cdn.dreammaker-groupsoft.ir",
+          "mode": "auto",
+          "xPaddingBytes": "100-1000",
+          "headers": {}
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      }
+    },
+    {
+      "tag": "vless-plus",
+      "listen": "127.0.0.1",
+      "port": 11004,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "e8eb3d74-8e8c-4903-b878-8feb656ebb0c",
+            "email": "🚀 DreamMaker  |  PLUS  ·  10 GB",
+            "flow": ""
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "none",
+        "xhttpSettings": {
+          "path": "/api/v2/feed",
+          "host": "cdn.dreammaker-groupsoft.ir",
+          "mode": "auto",
+          "xPaddingBytes": "100-1000",
+          "headers": {}
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      }
+    },
+    {
+      "tag": "vless-pro",
+      "listen": "127.0.0.1",
+      "port": 11005,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "b3540a54-67dd-452a-b5d8-45d6407b8da5",
+            "email": "💫 DreamMaker  |  PRO  ·  15 GB",
+            "flow": ""
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "none",
+        "xhttpSettings": {
+          "path": "/static/bundle.js",
+          "host": "cdn.dreammaker-groupsoft.ir",
+          "mode": "auto",
+          "xPaddingBytes": "100-1000",
+          "headers": {}
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      }
+    },
+    {
+      "tag": "vless-elite",
+      "listen": "127.0.0.1",
+      "port": 11006,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "2680152c-0dc3-4fdb-b366-e936358b121f",
+            "email": "🔥 DreamMaker  |  ELITE  ·  20 GB",
+            "flow": ""
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "none",
+        "xhttpSettings": {
+          "path": "/media/stream",
+          "host": "cdn.dreammaker-groupsoft.ir",
+          "mode": "auto",
+          "xPaddingBytes": "100-1000",
+          "headers": {}
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      }
+    },
+    {
+      "tag": "vless-unlimited",
+      "listen": "127.0.0.1",
+      "port": 11007,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "89c0f294-3f94-4735-96cf-9c1aefdbcbb2",
+            "email": "💎 DreamMaker  |  UNLIMITED  ·  ∞",
+            "flow": ""
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "none",
+        "xhttpSettings": {
+          "path": "/v2/content/live",
+          "host": "cdn.dreammaker-groupsoft.ir",
+          "mode": "auto",
+          "xPaddingBytes": "100-1000",
+          "headers": {}
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "direct",
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "UseIPv4",
+        "redirect": "",
+        "noises": []
+      },
+      "streamSettings": {
+        "sockopt": {
+          "tcpFastOpen": true,
+          "tcpNoDelay": true,
+          "tcpKeepAliveIdle": 120,
+          "tcpMptcp": false,
+          "mark": 255
+        }
+      }
+    },
+    {
+      "tag": "warp",
+      "protocol": "socks",
+      "settings": {
+        "servers": [
+          {
+            "address": "127.0.0.1",
+            "port": 40000
+          }
+        ]
+      },
+      "streamSettings": {
+        "sockopt": {
+          "tcpFastOpen": true,
+          "tcpNoDelay": true,
+          "tcpMptcp": false
+        }
+      }
+    },
+    {
+      "tag": "blocked",
+      "protocol": "blackhole",
+      "settings": {}
+    },
+    {
+      "tag": "api",
+      "protocol": "dns"
+    }
+  ]
+}

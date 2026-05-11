@@ -1,0 +1,20 @@
+Now I have a good understanding of the infrastructure document and the code. Let me analyze the key discrepancies between the code and the intended architecture.
+Key Architecture from the Infrastructure Handoff Document:
+
+Domain: dreammaker-groupsoft.ir
+CDN subdomain: cdn.dreammaker-groupsoft.ir
+Xray transport: XHTTP (primary), WebSocket (fallback)
+Nginx has path-based routing to 7 Xray tiers
+Nginx uses if ($http_upgrade != "websocket") { return 404; } — but this is WRONG for XHTTP transport! XHTTP uses regular HTTP, not WebSocket upgrade. The if block that rejects non-websocket will break XHTTP connections.
+The code generates VLESS subscription links with @edge.edgeId:443 but should use the actual domain dreammaker-groupsoft.ir
+The UUIDs in the code are randomly generated — they should use the actual UUIDs from the tier registry
+The edge worker generates vless://RANDOM_UUID@edgeId:443?type=transport but the actual infrastructure has specific UUIDs and specific hosts
+
+Detailed Issues Found:
+edge-worker-tier0.ts:
+
+CRITICAL: generateUUID() is random, not the actual UUIDs — The subscriptions should return the actual UUIDs for each tier (Starter, Basic, Standard, Plus, Pro, Elite, Unlimited) not random ones
+CRITICAL: VLESS URL generation uses edge.edgeId as hostname — Should use cdn.dreammaker-groupsoft.ir as the actual host
+CRITICAL: Transport type should be XHTTP for all tiers — The Xray config uses xhttp transport, but the subscription generation doesn't correctly map XHTTP to the VLESS URI format
+The subscription paths/ports mapping is missing — The VLESS links need to include the path parameter for each tier
+selectTransport() returns 'websocket' as primary for desktop — Should return 'xhttp' as primary for all (per architecture: XHTTP is primary, WebSocket is fallback)
