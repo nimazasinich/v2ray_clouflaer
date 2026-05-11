@@ -1,0 +1,10 @@
+name = "dreammaker-panel-edge-v2"
+main = "panel-edge-v2.js"
+compatibility_date = "2025-05-10"
+compatibility_flags = ["nodejs_compat"]
+
+account_id = "d902b91f0f1076e0601ffd6e7b4382c0"
+
+routes = [
+  { pattern = "access.dreammaker-groupsoft.ir/*", zone_name = "dreammaker-groupsoft.ir" }
+]

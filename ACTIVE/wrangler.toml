@@ -1,0 +1,34 @@
+name = "edge-ws-relay-v4"
+main = "src/worker.js"
+compatibility_date = "2025-05-10"
+compatibility_flags = ["nodejs_compat"]
+
+# ── KV Namespace ─────────────────────────────────────────────────
+# Binding: HEALTH_KV — used for state, health check cache, TG cooldown
+[[kv_namespaces]]
+binding    = "HEALTH_KV"
+id         = "ef1a164f23424e9a9b23721fb0d16133"
+preview_id = "ef1a164f23424e9a9b23721fb0d16133"
+
+# ── Environment Variables ─────────────────────────────────────────
+# Backend: Germany VPS on port 2053 (Cloudflare proxied, Nginx listens here)
+# ⚠️  NEVER use 82.115.26.105:80 — backend port is 2053
+[vars]
+PANEL_BACKEND_URL = "http://82.115.26.105:2053"
+ENVIRONMENT       = "production"
+
+# ── Scheduled triggers ─────────────────────────────────────────────
+# Health check runs every 2 minutes
+[[triggers.crons]]
+cron = "*/2 * * * *"
+
+# ── Routes ────────────────────────────────────────────────────────
+# IMPORTANT: Do NOT add *.dreammaker-groupsoft.ir/* wildcard here.
+# direct1.* and direct2.* MUST be grey-cloud (DNS-only) in CF dashboard.
+# Orange-cloud subdomains matching a wildcard route → CDN loop → error 1003.
+# Routes are managed via the Cloudflare dashboard for safety.
+#
+# Currently active routes (set in CF dashboard):
+#   cdn.dreammaker-groupsoft.ir/*
+#   dreammaker-groupsoft.ir/sub*
+#   dreammaker-groupsoft.ir/health*

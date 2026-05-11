@@ -1,0 +1,21 @@
+name = "dreammaker-panel-access"
+main = "panel-access-worker.js"
+compatibility_date = "2025-05-10"
+compatibility_flags = ["nodejs_compat"]
+
+# Account
+account_id = "d902b91f0f1076e0601ffd6e7b4382c0"
+
+# Routes
+routes = [
+  { pattern = "admin.dreammaker-groupsoft.ir/*", zone_name = "dreammaker-groupsoft.ir" }
+]
+
+# Environment variables (optional overrides)
+[vars]
+# PANEL_URL = "https://82.115.26.105:2822"
+# PANEL_BASE_PATH = "/jZMb26oGjigaPhSgj9/"
+# ADMIN_USER = "admin"
+# ADMIN_PASS = "admin123"
+# AUTH_SECRET = "strong_random_secret"
+# PANIC_MODE = "false"

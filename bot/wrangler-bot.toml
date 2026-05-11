@@ -1,0 +1,17 @@
+name = "dreammaker-sales-bot"
+main = "bot.js"
+compatibility_date = "2025-05-10"
+account_id = "d902b91f0f1076e0601ffd6e7b4382c0"
+
+[[kv_namespaces]]
+binding    = "HEALTH_KV"
+id         = "ef1a164f23424e9a9b23721fb0d16133"
+preview_id = "ef1a164f23424e9a9b23721fb0d16133"
+
+[vars]
+# Override via wrangler secret put or CF dashboard → Settings → Variables
+BOT_TOKEN_ENV  = ""
+ADMIN_CHAT_ID  = "7437859619"
+
+# Route: bot webhook endpoint
+# Telegram will POST to: https://dreammaker-groupsoft.ir/tgbot
