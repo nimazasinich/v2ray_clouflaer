@@ -1,0 +1,35 @@
+{
+  "transport": "xhttp",
+  "primary_domain": "dreammaker-groupsoft.ir",
+  "cdn_host": "cdn.dreammaker-groupsoft.ir",
+  "tiers": {
+    "starter": {
+      "port": 11001,
+      "path": "/api/v1/ping"
+    },
+    "basic": {
+      "port": 11002,
+      "path": "/cdn/init"
+    },
+    "standard": {
+      "port": 11003,
+      "path": "/app/sync"
+    },
+    "plus": {
+      "port": 11004,
+      "path": "/api/v2/feed"
+    },
+    "pro": {
+      "port": 11005,
+      "path": "/static/bundle.js"
+    },
+    "elite": {
+      "port": 11006,
+      "path": "/media/stream"
+    },
+    "unlimited": {
+      "port": 11007,
+      "path": "/v2/content/live"
+    }
+  }
+}

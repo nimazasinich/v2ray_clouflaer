@@ -1,0 +1,7 @@
+name = "dreammaker-tier1"
+main = "helper-ecosystem-tier1.ts"
+compatibility_date = "2026-05-09"
+
+[[kv_namespaces]]
+binding = "EDGE_CACHE"
+id = "ef1a164f23424e9a9b23721fb0d16133"

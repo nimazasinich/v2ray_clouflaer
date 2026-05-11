@@ -1,0 +1,11 @@
+name = "dreammaker-tier0"
+main = "edge-worker-tier0.ts"
+compatibility_date = "2026-05-09"
+
+[vars]
+PRIMARY_DOMAIN = "dreammaker-groupsoft.ir"
+CDN_HOST = "cdn.dreammaker-groupsoft.ir"
+
+[[kv_namespaces]]
+binding = "DM_KV"
+id = "ef1a164f23424e9a9b23721fb0d16133"

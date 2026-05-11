@@ -1,0 +1,29 @@
+# ============================================================
+# DreamMaker Tier 0 — Cloudflare Worker deployment config
+# This file is the canonical Tier 0 config.
+# The deploy.sh script generates Tier 1 and Tier 2 temp configs at runtime.
+# ============================================================
+
+name = "dreammaker-tier0-edge"
+main = "edge-worker-tier0.ts"
+compatibility_date = "2024-09-23"
+account_id = "d902b91f0f1076e0601ffd6e7b4382c0"
+
+[[routes]]
+pattern = "cdn.dreammaker-groupsoft.ir/sub*"
+zone_name = "dreammaker-groupsoft.ir"
+
+[[routes]]
+pattern = "cdn.dreammaker-groupsoft.ir/health"
+zone_name = "dreammaker-groupsoft.ir"
+
+[[routes]]
+pattern = "cdn.dreammaker-groupsoft.ir/ping"
+zone_name = "dreammaker-groupsoft.ir"
+
+[[kv_namespaces]]
+binding = "DM_KV"
+id = "ef1a164f23424e9a9b23721fb0d16133"
+
+[vars]
+ENVIRONMENT = "production"

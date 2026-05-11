@@ -1,0 +1,126 @@
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# DreamMaker Infrastructure — Environment Configuration
+# Domain: dreammaker-groupsoft.ir
+# Last updated: 2026-05-09
+#
+# SECURITY: Never commit this file to version control.
+#           Add ".env" to .gitignore immediately.
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# ── Cloudflare ──────────────────────────────────────────────
+
+# Primary full-access token (Workers + KV + DNS + Routes)
+# Use this for ALL new operations.
+CF_API_TOKEN="cfut_9X9JcNyxRKrZTwKg8fdQ2ua26ftC6nk5ltQeurdwbd919108"
+
+# Zone and Account identifiers
+CF_ZONE_ID="7521f025c7660ad0f5ab6c57d787fa6f"
+CF_ACCOUNT_ID="d902b91f0f1076e0601ffd6e7b4382c0"
+CF_KV_NAMESPACE_ID="ef1a164f23424e9a9b23721fb0d16133"
+
+# Legacy token slots — kept for backward compatibility only
+CF_TOKEN1="cfut_Gacm7SKyrJI0v027D0rPp5d05ub9JeG8YJB8k5Lg6407da1a"
+CF_TOKEN2="cfut_OJx1tm7yQ5PYOp3p03y3yBBfzJzj2E2L7gLFjIOo6a224b90"
+CF_TOKEN3="cfut_dwkZszri1j76LDzWaGSryhQymn4DHeQcY8QXjNZw621e11a8"
+CF_TOKEN4="cfut_dwkZszri1j76LDzWaGSryhQymn4DHeQcY8QXjNZw621e11a8"
+CF_TOKEN5="cfut_9X9JcNyxRKrZTwKg8fdQ2ua26ftC6nk5ltQeurdwbd919108"
+
+# ── Domain ──────────────────────────────────────────────────
+
+DOMAIN="dreammaker-groupsoft.ir"
+CDN_DOMAIN="cdn.dreammaker-groupsoft.ir"
+
+# ── VPS — Germany (Primary Production) ─────────────────────
+# Ubuntu LTS ARM64 | SSH port 22 blocked at provider datacenter.
+# Access via VNC/KVM console through provider panel.
+# When connecting from outside network, use SOCKS5 proxy below.
+
+VPS_DE_IP="82.115.26.105"
+VPS_DE_USER="root"
+VPS_DE_PORT="22"
+VPS_DE_PASS="1111111111"
+VPS_DE_PROXY="127.0.0.1:10808"
+
+# ── VPS — Iran (Relay / Secondary) ─────────────────────────
+# Direct SSH works on port 2222 (no proxy required).
+
+VPS_IR_IP="87.107.108.53"
+VPS_IR_USER="root"
+VPS_IR_PORT="2222"
+VPS_IR_PASS="1111111111"
+VPS_IR_PROXY=""
+
+# ── Telegram Bot ─────────────────────────────────────────────
+
+TELEGRAM_BOT_TOKEN="7437859619:AAH-2MJdlNmNf7ZSlj16zf-g0QJqB-TIxJU"
+TELEGRAM_BOT_USERNAME="Freqbasterd_bot"
+TELEGRAM_OWNER_ID="7437859619"
+TELEGRAM_CHAT_ID="7437859619"
+
+# ── Infrastructure Tier UUIDs ────────────────────────────────
+# These are the canonical Xray client IDs.
+# Each maps to a dedicated XHTTP port (1100X) and WS port (1110X).
+#
+# Tier      XHTTP Port  WS Port   Nginx Path              Nginx WS Path
+# -------   ----------  -------   ----------------------  ----------------------
+# Starter   11001       11101     /api/v1/ping            /api/v1/ping-ws
+# Basic     11002       11102     /cdn/init               /cdn/init-ws
+# Standard  11003       11103     /app/sync               /app/sync-ws
+# Plus      11004       11104     /api/v2/feed            /api/v2/feed-ws
+# Pro       11005       11105     /static/bundle.js       /static/bundle-ws
+# Elite     11006       11106     /media/stream           /media/stream-ws
+# Unlimited 11007       11107     /v2/content/live        /v2/content/live-ws
+
+TIER_STARTER_UUID="7dd47c02-8dce-4b12-9dbc-7cdb95a9e10e"
+TIER_BASIC_UUID="92ebaa01-ec34-4601-a4dc-f6afdf822966"
+TIER_STANDARD_UUID="3d5e3adf-0912-4c78-9ca9-b87db334ce71"
+TIER_PLUS_UUID="e8eb3d74-8e8c-4903-b878-8feb656ebb0c"
+TIER_PRO_UUID="b3540a54-67dd-452a-b5d8-45d6407b8da5"
+TIER_ELITE_UUID="2680152c-0dc3-4fdb-b366-e936358b121f"
+TIER_UNLIMITED_UUID="89c0f294-3f94-4735-96cf-9c1aefdbcbb2"
+
+# ── Transport ────────────────────────────────────────────────
+
+TRANSPORT_PRIMARY="xhttp"
+TRANSPORT_FALLBACK="websocket"
+
+# ── SSL Certificates (Let's Encrypt via Certbot) ─────────────
+
+SSL_CERT_PATH="/etc/letsencrypt/live/dreammaker-groupsoft.ir/fullchain.pem"
+SSL_KEY_PATH="/etc/letsencrypt/live/dreammaker-groupsoft.ir/privkey.pem"
+
+# ── Application ─────────────────────────────────────────────
+
+NODE_ENV="production"
+DEBUG="false"
+LOG_LEVEL="info"
+
+# ── Rate Limiting & Security ─────────────────────────────────
+
+RATE_LIMIT_REQUESTS="100"
+RATE_LIMIT_WINDOW="60s"
+RATE_LIMIT_BY_IP="10"
+CLOUDFLARE_DDOS_PROTECTION="enabled"
+
+# ── Logging & Monitoring ─────────────────────────────────────
+
+LOG_RETENTION_NGINX="14"
+LOG_RETENTION_XRAY="7"
+ENABLE_IP_ANONYMIZATION="true"
+LOG_FULL_PAYLOAD="false"
+
+# ── Health Check & Backup ────────────────────────────────────
+
+HEALTH_CHECK_INTERVAL="30s"
+UPSTREAM_HEALTH_CHECK_ENABLED="true"
+BACKUP_ENABLED="true"
+BACKUP_INTERVAL="daily"
+
+# ── Infrastructure Versions ──────────────────────────────────
+
+NGINX_VERSION="1.30.0"
+MANAGEMENT_PANEL="3X-UI"
+XRAY_VERSION="v26.4.25"
+TLS_MIN_VERSION="1.2"
+TLS_MAX_VERSION="1.3"
+CLOUDFLARE_PROXY="orange-cloud"

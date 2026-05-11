@@ -1,0 +1,8 @@
+name = "dreammaker-tier2"
+main = "control-plane-tier2.ts"
+compatibility_date = "2026-05-09"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "dreammaker"
+database_id = "REPLACE_D1_ID"

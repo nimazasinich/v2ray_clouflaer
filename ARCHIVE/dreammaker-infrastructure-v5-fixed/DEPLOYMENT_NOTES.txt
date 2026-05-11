@@ -1,0 +1,11 @@
+This package contains:
+- deploy.sh: deploys Tier 0, Tier 1, and Tier 2 with wrangler.
+- wrangler.toml: base Tier 0 config.
+- TypeScript sources: edge-worker-tier0.ts, helper-ecosystem-tier1.ts, control-plane-tier2.ts.
+- schema.sql, nginx.conf, xray-config.json, .env.example, tsconfig.json, worker-stubs.d.ts.
+
+Run:
+  ./deploy.sh
+
+For a partial deploy:
+  DEPLOY_TIER1=0 DEPLOY_TIER2=0 ./deploy.sh

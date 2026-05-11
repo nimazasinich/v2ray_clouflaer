@@ -1,0 +1,47 @@
+{
+  "name": "dreammaker-workers",
+  "version": "1.0.0",
+  "description": "DreamMaker Infrastructure - Cloudflare Workers Deployment",
+  "type": "module",
+  "main": "edge-worker-tier0.ts",
+  "scripts": {
+    "deploy": "npm run build && wrangler deploy",
+    "deploy:tier0": "wrangler deploy --config wrangler.toml",
+    "deploy:tier1": "wrangler deploy --config wrangler-tier1.toml",
+    "deploy:tier2": "wrangler deploy --config wrangler-tier2.toml",
+    "dev": "wrangler dev --config wrangler.toml",
+    "build": "tsc --noEmit",
+    "typecheck": "tsc --noEmit --strict",
+    "validate": "bash ./deploy.sh --validate",
+    "check-env": "bash ./deploy.sh --check-env",
+    "test": "echo \"Tests not implemented yet\""
+  },
+  "keywords": [
+    "dreammaker",
+    "cloudflare-workers",
+    "xray",
+    "vless",
+    "proxy",
+    "censorship-resistance"
+  ],
+  "author": "DreamMaker Team",
+  "license": "MIT",
+  "dependencies": {
+    "wrangler": "^3.26.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dreammaker/infrastructure.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dreammaker/infrastructure/issues"
+  },
+  "homepage": "https://dreammaker-groupsoft.ir"
+}
