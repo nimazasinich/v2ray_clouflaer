@@ -1,0 +1,202 @@
+# ══════════════════════════════════════════════════════════════════
+# DreamMaker Infrastructure — Environment Configuration
+# Domain:       dreammaker-groupsoft.ir
+# VPS:          Germany ONLY — 82.115.26.105
+# Backend Port: 2053 (Nginx on VPS, Cloudflare-proxied)
+# Last updated: 2026-05-11
+# Architecture: 4 Active Workers (tier0, tier1, edge-ws-relay-v4, hiddify-panel-proxy)
+# Iran:         FULLY REMOVED (2026-05-08) — No Iran VPS, no Iran workers
+#
+# SECURITY: NEVER commit this file to version control.
+#           Ensure ".env" is in .gitignore.
+#
+# FOR AI TOOLS: This file is the single source of truth for all
+# credentials and configuration values. Read from here, never hardcode.
+# ══════════════════════════════════════════════════════════════════
+
+# # ── Cloudflare ──────────────────────────────────────────────────
+#
+# # PRIMARY token — use this for ALL operations (Workers, KV, DNS, Routes)
+# CF_API_TOKEN="cfut_9X9JcNyxRKrZTwKg8fdQ2ua26ftC6nk5ltQeurdwbd919108"
+#
+# CF_ZONE_ID="7521f025c7660ad0f5ab6c57d787fa6f"
+# CF_ACCOUNT_ID="d902b91f0f1076e0601ffd6e7b4382c0"
+# CF_KV_NAMESPACE_ID="ef1a164f23424e9a9b23721fb0d16133"
+#
+# # Additional KV namespaces used by tier0/tier1/relay
+# CF_KV_HEALTH_ID="d401afa9036e4e86b2d28fe1bd47d2f8"
+# CF_KV_EDGE_SCORES_ID="NOT_FOUND_NO_MATCHING_KV_NAMESPACE"
+#
+# # D1 Database used by dreammaker-tier1 (Helper Ecosystem)
+# CF_D1_DATABASE_ID="AUTH_ERROR_TOKEN_LACKS_D1_PERMISSION"
+# CF_D1_DATABASE_NAME="DM_DB"
+#
+# # Legacy tokens (kept for reference only — do not use for new operations)
+# CF_TOKEN_DNS="cfut_Gacm7SKyrJI0v027D0rPp5d05ub9JeG8YJB8k5Lg6407da1a"
+# CF_TOKEN_WORKERS="cfut_dwkZszri1j76LDzWaGSryhQymn4DHeQcY8QXjNZw621e11a8"
+#
+# # Backup / reference tokens (added 2026-05-11). Primary is CF_API_TOKEN above.
+# CF_TOKEN1="cfut_Gacm7SKyrJI0v027D0rPp5d05ub9JeG8YJB8k5Lg6407da1a"
+# CF_TOKEN2="cfut_OJx1tm7yQ5PYOp3p03y3yBBfzJzj2E2L7gLFjIOo6a224b90"
+# CF_TOKEN3="cfut_dwkZszri1j76LDzWaGSryhQymn4DHeQcY8QXjNZw621e11a8"
+# CF_TOKEN4="cfut_dwkZszri1j76LDzWaGSryhQymn4DHeQcY8QXjNZw621e11a8"
+# CF_TOKEN5="cfut_9X9JcNyxRKrZTwKg8fdQ2ua26ftC6nk5ltQeurdwbd919108"
+#
+# # ── Domain ──────────────────────────────────────────────────────
+#
+# DOMAIN="dreammaker-groupsoft.ir"
+# CDN_DOMAIN="cdn.dreammaker-groupsoft.ir"
+# CLEAN_DOMAIN="clean.dreammaker-groupsoft.ir"
+# PANEL_DOMAIN="panel.dreammaker-groupsoft.ir"
+#
+# # ── VPS — Germany (Single Production Server) ─────────────────────
+# #
+# # Architecture:
+# #   Client:443 → Cloudflare → Worker → http://VPS_DE_IP:2053 → Xray
+# #
+# # Workers & routes:
+# #   dreammaker-tier0        /sub*, /health, /ping (both domains)
+# #   dreammaker-tier1        scheduled only (no HTTP routes)
+# #   edge-ws-relay-v4        /ws*, /ws-vless*, /grpc-vless*
+# #   hiddify-panel-proxy     panel.dreammaker-groupsoft.ir/*
+# #
+# # SSH ACCESS: Port 22 is blocked at the datacenter level (silent DROP).
+# # Use VNC/KVM console through the provider web panel.
+# # There is NO direct SSH access from outside.
+# #
+# # ⚠️  IRANIAN VPS DOES NOT EXIST IN THIS PROJECT — never add VPS_IR_* vars.
+# #     Former Iran IP 87.107.108.53:2222 — credentials deleted 2026-05-08.
+#
+# VPS_DE_IP="82.115.26.105"
+# VPS_DE_USER="root"
+# VPS_DE_PASS="1111111111"
+# VPS_DE_BACKEND_PORT="2053"
+#
+# # ── Worker Config ────────────────────────────────────────────────
+#
+# PANEL_BACKEND_URL="http://82.115.26.105:2053"
+# WORKER_NAME="edge-ws-relay-v4"
+#
+# # Active worker names (for reference — actual deployment is per-worker)
+# WORKER_TIER0="dreammaker-tier0"
+# WORKER_TIER1="dreammaker-tier1"
+# WORKER_RELAY="edge-ws-relay-v4"
+# WORKER_PANEL="hiddify-panel-proxy"
+#
+# # Obsolete workers (no routes, zero traffic)
+# # edge-ws-relay-ir    — Iran relay (DEAD)
+# # edge-ws-relay-v3    — superseded by v4
+# # edge-ws-relay       — original v1
+# # small-thunder-6298  — legacy
+#
+# # ── Telegram Bot ─────────────────────────────────────────────────
+#
+# TELEGRAM_BOT_TOKEN="7437859619:AAH-2MJdlNmNf7ZSlj16zf-g0QJqB-TIxJU"
+# TELEGRAM_BOT_USERNAME="Freqbasterd_bot"
+# TELEGRAM_OWNER_ID="7437859619"
+# TELEGRAM_CHAT_ID="7437859619"
+#
+# # Notification toggles
+# TG_SEND_STARTUP_MESSAGE="true"
+# TG_ALERT_ON_DEPLOYMENT="true"
+# TG_ALERT_ON_ERROR="true"
+# TG_ALERT_ON_HEALTH_CHANGE="true"
+#
+# # ── Infrastructure Tier UUIDs ────────────────────────────────────
+# #
+# # CANONICAL — DO NOT CHANGE THESE.
+# # Each UUID maps to a dedicated Xray inbound (XHTTP, mode=auto).
+# #
+# # Tier      UUID                                    Port   Nginx Path
+# # --------- --------------------------------------- ------ ----------------------
+# # Starter   7dd47c02-8dce-4b12-9dbc-7cdb95a9e10e   11001  /api/v1/ping
+# # Basic     92ebaa01-ec34-4601-a4dc-f6afdf822966   11002  /cdn/init
+# # Standard  3d5e3adf-0912-4c78-9ca9-b87db334ce71   11003  /app/sync
+# # Plus      e8eb3d74-8e8c-4903-b878-8feb656ebb0c   11004  /api/v2/feed
+# # Pro       b3540a54-67dd-452a-b5d8-45d6407b8da5   11005  /static/bundle.js
+# # Elite     2680152c-0dc3-4fdb-b366-e936358b121f   11006  /media/stream
+# # Unlimited 89c0f294-3f94-4735-96cf-9c1aefdbcbb2   11007  /v2/content/live
+#
+# TIER_STARTER_UUID="7dd47c02-8dce-4b12-9dbc-7cdb95a9e10e"
+# TIER_BASIC_UUID="92ebaa01-ec34-4601-a4dc-f6afdf822966"
+# TIER_STANDARD_UUID="3d5e3adf-0912-4c78-9ca9-b87db334ce71"
+# TIER_PLUS_UUID="e8eb3d74-8e8c-4903-b878-8feb656ebb0c"
+# TIER_PRO_UUID="b3540a54-67dd-452a-b5d8-45d6407b8da5"
+# TIER_ELITE_UUID="2680152c-0dc3-4fdb-b366-e936358b121f"
+# TIER_UNLIMITED_UUID="89c0f294-3f94-4735-96cf-9c1aefdbcbb2"
+#
+# # ── Admin Secrets (set via `wrangler secret put` for Workers) ────
+#
+# ADMIN_TOKEN="tr9i9x3tuAr4tqy45L+rC3FphTLAScZ5yy06UiUxmqc="
+# JWT_SECRET="ysmqZXrCFcdEL0jghXasJAbHm9KvgsP3oq3kfVR8G0s="
+#
+# # ── 3X-UI Panel Access ─────────────────────────────────────────
+#
+# PANEL_URL="http://82.115.26.105:2053"
+# PANEL_PATH="/panel-proxy/"
+# PANEL_USER="admin"
+# PANEL_PASS="admin123"
+#
+# # CF Workers reach the panel via Nginx proxy (port 2053, /panel-proxy/)
+# # NOT directly to :2822 — Cloudflare egress IPs are blocked by the panel
+# PANEL_NGINX_PROXY="http://82.115.26.105:2053/panel-proxy/"
+# PANEL_PUBLIC_URL_1="https://access.dreammaker-groupsoft.ir"
+# PANEL_PUBLIC_URL_2="https://admin.dreammaker-groupsoft.ir"
+#
+# # ── Transport ─────────────────────────────────────────────────────
+#
+# TRANSPORT_PRIMARY="xhttp"
+# TRANSPORT_FALLBACK="websocket"
+# TRANSPORT_MODE="auto"
+#
+# # ── SSL (Let's Encrypt via Certbot on VPS) ────────────────────────
+#
+# SSL_CERT_PATH="/etc/letsencrypt/live/dreammaker-groupsoft.ir/fullchain.pem"
+# SSL_KEY_PATH="/etc/letsencrypt/live/dreammaker-groupsoft.ir/privkey.pem"
+#
+# # ── Infrastructure Versions ───────────────────────────────────────
+#
+# NODE_ENV="production"
+# MANAGEMENT_PANEL="3X-UI"
+# XRAY_VERSION="v26.4.25"
+# NGINX_VERSION="1.30.0"
+# TLS_MIN_VERSION="1.2"
+# TLS_MAX_VERSION="1.3"
+# CLOUDFLARE_PROXY="orange-cloud"
+#
+# # ── Logging ───────────────────────────────────────────────────────
+#
+# LOG_RETENTION_NGINX="14"
+# LOG_RETENTION_XRAY="7"
+# ENABLE_IP_ANONYMIZATION="true"
+#
+# # ── Iran — DEPRECATED (2026-05-08) ────────────────────────────────
+# #
+# # Iran VPS and relay worker were fully removed from the architecture.
+# # These markers exist ONLY to prevent accidental re-addition.
+# # 
+# # Former Iran VPS:   87.107.108.53:2222
+# # Former Worker:     edge-ws-relay-ir (no routes, no traffic)
+# # Former KV Keys:    IRAN_REAL, IRAN_ALIVE, IRAN_PORTAL_WS, IRAN_HEALTH_URL
+# # Worker Code:       All Iran references stripped (worker.js v7.2-de-only)
+#
+# IRAN_DEPRECATED="true"
+# IRAN_DEPRECATED_DATE="2026-05-08"
+# IRAN_DEPRECATED_NOTE="Iran VPS and edge-ws-relay-ir removed. Architecture is Germany-only. See STRATEGY_REPORT.md"
+#
+# # ── Health Check Config (tier1 + relay) ───────────────────────────
+#
+# HEALTH_CHECK_INTERVAL_MINUTES="5"
+# HEALTH_CHECK_TIMEOUT_SECONDS="10"
+# HEALTH_CHECK_THRESHOLD_WARN="500"
+# HEALTH_CHECK_THRESHOLD_CRITICAL="2000"
+# # Relay worker runs health check cron: */2 * * * *
+#
+# # ── Cache Config ──────────────────────────────────────────────────
+#
+# CACHE_TTL_SECONDS="60"
+# CACHE_KEY_PREFIX="dm"
+#
+# # ══════════════════════════════════════════════════════════════════
+# # END OF CONFIGURATION
+# # ══════════════════════════════════════════════════════════════════
